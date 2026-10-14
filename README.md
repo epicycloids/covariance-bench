@@ -37,6 +37,16 @@ summaries use medians; loss means and Monte Carlo errors use independent simulat
 draws, averaging repeated timings within each draw. Missing or failed trials
 remain visible and prevent a complete-case headline score.
 
+To change scoring without rerunning or retiming candidate code:
+
+```sh
+covbench regrade runs/tick/results.json --output runs/tick/regraded.json
+```
+
+Regrading checks saved-output and regenerated-input hashes. Measurement and
+scoring identities remain separate. [Example results](examples/README.md) show
+three baselines evaluated on paired core draws.
+
 ## Submit code
 
 Create a directory containing `candidate.json` and an importable factory:

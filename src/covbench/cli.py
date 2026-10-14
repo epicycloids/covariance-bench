@@ -25,6 +25,9 @@ def main(argv=None):
     frontier.add_argument("reports", type=Path, nargs="+")
     frontier.add_argument("--objectives", nargs="+", default=["completed_ns", "covariance_nmse"])
     frontier.add_argument("--output", type=Path)
+    grade = commands.add_parser("regrade", help="recalculate losses from saved timed outputs without executing a candidate")
+    grade.add_argument("report", type=Path)
+    grade.add_argument("--output", type=Path, required=True, help="new report file beside the original")
     args = parser.parse_args(argv)
     if args.command == "run":
         from .runner import evaluate
@@ -36,6 +39,11 @@ def main(argv=None):
                           memory_mib=args.memory_mib, batch_size=args.batch_size)
         print(json.dumps(dict(results=str(args.output / "results.json"), root_seed=report["root_seed"],
                               records=len(report["records"]), failed=sum(r["status"]=="failed" for r in report["records"]))))
+        return 0
+    if args.command == "regrade":
+        from .runner import regrade
+        regrade(args.report, args.output)
+        print(args.output)
         return 0
     from .pareto import frontiers
     records = []

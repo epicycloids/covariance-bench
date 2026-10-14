@@ -104,7 +104,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "historical",
@@ -178,7 +178,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "forecast",
@@ -252,7 +252,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "historical",
@@ -326,7 +326,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "forecast",
@@ -400,7 +400,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "historical",
@@ -474,7 +474,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "offline",
       "track": "forecast",
@@ -548,7 +548,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "historical",
@@ -622,7 +622,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "forecast",
@@ -696,7 +696,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "historical",
@@ -770,7 +770,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "forecast",
@@ -844,7 +844,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "historical",
@@ -918,7 +918,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-16",
       "mode": "online",
       "track": "forecast",
@@ -992,7 +992,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "historical",
@@ -1066,7 +1066,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "forecast",
@@ -1140,7 +1140,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "historical",
@@ -1214,7 +1214,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "forecast",
@@ -1288,7 +1288,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "historical",
@@ -1362,7 +1362,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "offline",
       "track": "forecast",
@@ -1436,7 +1436,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "historical",
@@ -1510,7 +1510,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "forecast",
@@ -1584,7 +1584,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "historical",
@@ -1658,7 +1658,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "forecast",
@@ -1732,7 +1732,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "historical",
@@ -1806,7 +1806,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-16",
       "mode": "online",
       "track": "forecast",
@@ -1880,7 +1880,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "historical",
@@ -1954,7 +1954,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "forecast",
@@ -2028,7 +2028,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "historical",
@@ -2102,7 +2102,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "forecast",
@@ -2176,7 +2176,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "historical",
@@ -2250,7 +2250,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "offline",
       "track": "forecast",
@@ -2324,7 +2324,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "historical",
@@ -2398,7 +2398,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "forecast",
@@ -2472,7 +2472,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "historical",
@@ -2546,7 +2546,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "forecast",
@@ -2620,7 +2620,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "historical",
@@ -2694,7 +2694,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-16",
       "mode": "online",
       "track": "forecast",
@@ -2768,7 +2768,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "historical",
@@ -2842,7 +2842,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "forecast",
@@ -2916,7 +2916,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "historical",
@@ -2990,7 +2990,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "forecast",
@@ -3064,7 +3064,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "historical",
@@ -3138,7 +3138,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "offline",
       "track": "forecast",
@@ -3212,7 +3212,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "historical",
@@ -3286,7 +3286,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "forecast",
@@ -3360,7 +3360,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "historical",
@@ -3434,7 +3434,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "forecast",
@@ -3508,7 +3508,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "historical",
@@ -3582,7 +3582,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-64",
       "mode": "online",
       "track": "forecast",
@@ -3656,7 +3656,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "historical",
@@ -3730,7 +3730,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "forecast",
@@ -3804,7 +3804,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "historical",
@@ -3878,7 +3878,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "forecast",
@@ -3952,7 +3952,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "historical",
@@ -4026,7 +4026,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "offline",
       "track": "forecast",
@@ -4100,7 +4100,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "historical",
@@ -4174,7 +4174,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "forecast",
@@ -4248,7 +4248,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "historical",
@@ -4322,7 +4322,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "forecast",
@@ -4396,7 +4396,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "historical",
@@ -4470,7 +4470,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-64",
       "mode": "online",
       "track": "forecast",
@@ -4544,7 +4544,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "historical",
@@ -4618,7 +4618,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "forecast",
@@ -4692,7 +4692,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "historical",
@@ -4766,7 +4766,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "forecast",
@@ -4840,7 +4840,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "historical",
@@ -4914,7 +4914,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "offline",
       "track": "forecast",
@@ -4988,7 +4988,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "historical",
@@ -5062,7 +5062,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "forecast",
@@ -5136,7 +5136,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "historical",
@@ -5210,7 +5210,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "forecast",
@@ -5284,7 +5284,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "historical",
@@ -5358,7 +5358,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-64",
       "mode": "online",
       "track": "forecast",
@@ -5432,7 +5432,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "historical",
@@ -5506,7 +5506,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "forecast",
@@ -5580,7 +5580,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "historical",
@@ -5654,7 +5654,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "forecast",
@@ -5728,7 +5728,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "historical",
@@ -5802,7 +5802,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "offline",
       "track": "forecast",
@@ -5876,7 +5876,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "historical",
@@ -5950,7 +5950,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "forecast",
@@ -6024,7 +6024,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "historical",
@@ -6098,7 +6098,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "forecast",
@@ -6172,7 +6172,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "historical",
@@ -6246,7 +6246,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-256",
       "mode": "online",
       "track": "forecast",
@@ -6320,7 +6320,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "historical",
@@ -6394,7 +6394,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "forecast",
@@ -6468,7 +6468,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "historical",
@@ -6542,7 +6542,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "forecast",
@@ -6616,7 +6616,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "historical",
@@ -6690,7 +6690,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "offline",
       "track": "forecast",
@@ -6764,7 +6764,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "historical",
@@ -6838,7 +6838,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "forecast",
@@ -6912,7 +6912,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "historical",
@@ -6986,7 +6986,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "forecast",
@@ -7060,7 +7060,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "historical",
@@ -7134,7 +7134,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-256",
       "mode": "online",
       "track": "forecast",
@@ -7208,7 +7208,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "historical",
@@ -7282,7 +7282,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "forecast",
@@ -7356,7 +7356,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "historical",
@@ -7430,7 +7430,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "forecast",
@@ -7504,7 +7504,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "historical",
@@ -7578,7 +7578,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "offline",
       "track": "forecast",
@@ -7652,7 +7652,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "historical",
@@ -7726,7 +7726,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "forecast",
@@ -7800,7 +7800,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "historical",
@@ -7874,7 +7874,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "forecast",
@@ -7948,7 +7948,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "historical",
@@ -8022,7 +8022,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-256",
       "mode": "online",
       "track": "forecast",
@@ -8096,7 +8096,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "historical",
@@ -8170,7 +8170,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "forecast",
@@ -8244,7 +8244,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "historical",
@@ -8318,7 +8318,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "forecast",
@@ -8392,7 +8392,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "historical",
@@ -8466,7 +8466,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "offline",
       "track": "forecast",
@@ -8540,7 +8540,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "historical",
@@ -8614,7 +8614,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "forecast",
@@ -8688,7 +8688,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "historical",
@@ -8762,7 +8762,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "forecast",
@@ -8836,7 +8836,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "historical",
@@ -8910,7 +8910,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "gaussian-clean-1024",
       "mode": "online",
       "track": "forecast",
@@ -8984,7 +8984,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "historical",
@@ -9058,7 +9058,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "forecast",
@@ -9132,7 +9132,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "historical",
@@ -9206,7 +9206,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "forecast",
@@ -9280,7 +9280,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "historical",
@@ -9354,7 +9354,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "offline",
       "track": "forecast",
@@ -9428,7 +9428,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "historical",
@@ -9502,7 +9502,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "forecast",
@@ -9576,7 +9576,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "historical",
@@ -9650,7 +9650,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "forecast",
@@ -9724,7 +9724,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "historical",
@@ -9798,7 +9798,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "student-noise-edits-1024",
       "mode": "online",
       "track": "forecast",
@@ -9872,7 +9872,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "historical",
@@ -9946,7 +9946,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "forecast",
@@ -10020,7 +10020,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "historical",
@@ -10094,7 +10094,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "forecast",
@@ -10168,7 +10168,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "historical",
@@ -10242,7 +10242,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "offline",
       "track": "forecast",
@@ -10316,7 +10316,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "historical",
@@ -10390,7 +10390,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "forecast",
@@ -10464,7 +10464,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "historical",
@@ -10538,7 +10538,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "forecast",
@@ -10612,7 +10612,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "historical",
@@ -10686,7 +10686,7 @@
     {
       "candidate": "async-native-refit",
       "candidate_sha256": "1b8f1ebda395268cc81ddb12532a9d00f060c6edb0f9dcab1f2c089b82b4d0a6",
-      "comparison_key": "6e2c5f851a0e75430aaafe7bc79cc4439e76e8212030a170041889042701c842",
+      "comparison_key": "66a1676248415902d5af823d3276d3d6972f569774595dc20d65bf895ff928ff",
       "scenario_id": "jumps-change-condition-1024",
       "mode": "online",
       "track": "forecast",
@@ -10758,6 +10758,10 @@
       "second_moment_nmse": 11.416255446863532
     }
   ],
+  "measurement_evaluator_sha256": "46313ca0bc53a6192060c927e39437e1c957d5d9c781bcde1e5d8c7e4c60d255",
+  "scoring_evaluator_sha256": "c6dedd7a2dbb21772d55f57fad0a583cccbbf72467bf4255141bcd431dd4bd9b",
+  "regraded_from_sha256": "313821884923908479f144349c94b6747462a740bbc98d2143b28b19822686ff",
   "raw_trial_count": 144,
-  "note": "Compact development example; raw predictions/logs are retained in the local run directory. Three independent draws, two process repetitions; frontier membership is descriptive."
+  "measurement_source_commit": "f6bc432",
+  "note": "Compact development example; raw predictions/logs retained locally. Three independent draws, two process repetitions. Descriptive frontier, not a validated ranking."
 }

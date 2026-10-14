@@ -330,3 +330,50 @@ def evaluate(candidate, suite, output, *, root_seed, replications=3, timing_repe
 def file_hash_bytes(value):
     import hashlib
     return hashlib.sha256(value).hexdigest()
+
+
+def regrade(report_path, output_path):
+    """Score saved measured predictions under the current scorer; keep timing identity.
+
+    Output stays beside the original report so trial paths remain relative.
+    The original report is preserved, and no candidate code is executed.
+    """
+    report_path, output_path = Path(report_path).resolve(), Path(output_path).resolve()
+    if output_path.parent != report_path.parent or output_path == report_path or output_path.exists():
+        raise ValueError("regrade output must be a new file beside the original report")
+    report = json.loads(report_path.read_text())
+    scoring_hash = tree_hash(Path(__file__).parent)
+    cache = {}
+    for trial in report["trials"]:
+        key = digest([trial["scenario_config"], trial["instance_seed"]])
+        if key not in cache:
+            from .scenarios import Scenario
+            cache[key] = generate(Scenario(trial["scenario_id"], trial["scenario_config"]), trial["instance_seed"])
+        dataset = cache[key]
+        fingerprint = digest(dict(arrays={name: [str(value.dtype), value.shape, file_hash_bytes(value.tobytes())]
+                                           for name, value in dict(arrays(dataset.events), arrival=dataset.arrival).items()},
+                                  queries=[asdict(q) for q in dataset.queries]))
+        if fingerprint != trial["inputs_sha256"]:
+            raise ValueError("generator changed the measured input; regrade refused")
+        for index, row in enumerate(trial["records"]):
+            if "output" not in row or row["status"] not in ("ok", "partial"):
+                continue
+            path = report_path.parent / trial["folder"] / row["output"]
+            if file_hash(path) != row["output_sha256"]:
+                raise ValueError("measured prediction changed; regrade refused")
+            if row["query"] != asdict(dataset.queries[index]):
+                raise ValueError("query changed; regrade refused")
+            losses = score(read_prediction(path), dataset.truth[index],
+                           seed=((trial["instance_seed"] ^ 0xD7AD5C32) + index) % 2**64)
+            row.update(status=losses["status"], metrics=losses["metrics"],
+                       metric_details=losses["metric_details"], diagnostics=losses["diagnostics"], errors=losses["errors"])
+    old_key = report["records"][0]["comparison_key"]
+    comparison_key = digest([old_key, scoring_hash])
+    common = dict(candidate=report["candidate"]["name"], candidate_sha256=report["candidate"]["sha256"],
+                  comparison_key=comparison_key)
+    report["measurement_evaluator_sha256"] = report.get("measurement_evaluator_sha256", report["evaluator_sha256"])
+    report["scoring_evaluator_sha256"] = scoring_hash
+    report["regraded_from_sha256"] = file_hash(report_path)
+    report["records"] = summarize(report["trials"], common)
+    output_path.write_text(json.dumps(report, indent=2, allow_nan=False)+"\n")
+    return report

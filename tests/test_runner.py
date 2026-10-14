@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from covbench.runner import evaluate, read_prediction
+from covbench.runner import evaluate, read_prediction, regrade
 from covbench.scenarios import Scenario, generate
 from covbench.provenance import derived_seed
 from covbench.worker import materialize
@@ -73,6 +73,16 @@ def test_causal_offline_online_measured_outputs_and_freezing(tmp_path):
         assert "stdout is redirected" in log
     assert report["trials"][0]["inputs_sha256"] == report["trials"][1]["inputs_sha256"]
     assert (output / "candidate" / "candidate.py").read_bytes() == (candidate / "candidate.py").read_bytes()
+    rescored = regrade(output / "results.json", output / "regraded.json")
+    for old, new in zip(report["records"], rescored["records"]):
+        assert old["covariance_nmse"] == new["covariance_nmse"]
+        assert old["completed_ns"] == new["completed_ns"]
+    assert rescored["measurement_evaluator_sha256"] == report["evaluator_sha256"]
+    first = report["trials"][0]
+    predicted = output / first["folder"] / first["records"][0]["output"]
+    predicted.write_bytes(b"changed")
+    with pytest.raises(ValueError, match="prediction changed"):
+        regrade(output / "results.json", output / "tampered.json")
 
 
 def test_deferred_computation_is_in_completed_work(tmp_path):

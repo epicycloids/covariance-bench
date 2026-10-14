@@ -324,6 +324,8 @@ def _mean_mahalanobis(prediction, truth, blocks, exact_limit, errors):
         root = np.sqrt(truth.covariance.specific)
         standardized = difference / (root / unit)
         factors = truth.covariance.loadings / root[:, None]
+        if not factors.shape[1]:
+            return float(np.dot(standardized, standardized) / n), {"scope": "full", "method": "diagonal_standardized_residual"}
         gram = np.eye(factors.shape[1]) + factors.T @ factors
         coefficient = cho_solve(cho_factor(gram, lower=True, check_finite=True), factors.T @ standardized)
         residual = standardized - factors @ coefficient
