@@ -1,0 +1,16 @@
+{
+  "name": "async-native-refit",
+  "entrypoint": "candidate:create",
+  "config": {
+    "lookback": 0.25,
+    "floor": 1e-8,
+    "threads": 1,
+    "degree": 8,
+    "rank": 8,
+    "specific_floor": 0.05,
+    "max_iter": 100,
+    "seed": 0
+  },
+  "api_version": 1,
+  "modes": ["offline", "online"]
+}

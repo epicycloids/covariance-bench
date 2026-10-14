@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "gaussian-async-4096",
+      "n_assets": 4096,
+      "grid_steps": 256,
+      "rank": 8,
+      "distribution": "gaussian",
+      "sampling": "asynchronous",
+      "observation_fraction": 0.15,
+      "noise": "iid",
+      "noise_scale": 0.02
+    },
+    {
+      "id": "student-imbalanced-4096",
+      "n_assets": 4096,
+      "grid_steps": 384,
+      "rank": 32,
+      "distribution": "student_t",
+      "df": 10,
+      "sampling": "imbalanced",
+      "imbalance": 32,
+      "observation_fraction": 0.25,
+      "noise": "ar",
+      "noise_scale": 0.04,
+      "regimes": 2,
+      "max_latency": 0.02,
+      "correction_fraction": 0.04,
+      "delete_fraction": 0.01
+    },
+    {
+      "id": "jumps-sparse-change-4096",
+      "n_assets": 4096,
+      "grid_steps": 256,
+      "rank": 64,
+      "distribution": "compound_poisson",
+      "sampling": "bursty",
+      "observation_fraction": 0.06,
+      "noise": "correlated",
+      "noise_scale": 0.03,
+      "condition": 1000000,
+      "regimes": 2,
+      "max_latency": 0.03,
+      "correction_fraction": 0.06,
+      "delete_fraction": 0.02
+    }
+  ]
+}

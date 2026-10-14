@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "covariance-bench"
+version = "0.1.0"
+description = "Reproducible speed and loss benchmarks for asynchronous moment estimators"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "scipy>=1.10"]
+license = "MIT"
+authors = [{name = "Logan Bell"}]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+covbench = "covbench.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

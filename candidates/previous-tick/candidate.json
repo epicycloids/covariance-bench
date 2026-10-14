@@ -1,0 +1,7 @@
+{
+  "name": "previous-tick",
+  "entrypoint": "candidate:create",
+  "config": {"bins": 32, "lookback": 0.25, "floor": 1e-8},
+  "api_version": 1,
+  "modes": ["offline", "online"]
+}

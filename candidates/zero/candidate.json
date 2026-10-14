@@ -1,0 +1,7 @@
+{
+  "name": "zero",
+  "entrypoint": "candidate:create",
+  "config": {},
+  "api_version": 1,
+  "modes": ["offline", "online"]
+}

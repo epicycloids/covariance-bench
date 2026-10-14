@@ -1,0 +1,8 @@
+include README.md LICENSE
+recursive-include suites *.json
+recursive-include candidates *.json *.py *.md
+recursive-include docs *.md
+recursive-include tasks *.md
+recursive-include tests *.py
+recursive-include examples *.json *.md
+include .github/workflows/check.yml
