@@ -4,9 +4,9 @@
 
 For any asset count $`N`$ and query interval $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$, `ZeroEstimator` ignores all observations and point edits (`fit` and `update` are no-ops) and returns zero mean, zero covariance, and zero second moment using an empty factor matrix:
 
-$$
+```math
 \hat{\mu} = 0 \in \mathbb{R}^N, \qquad \hat{\Sigma} = 0 \in \mathbb{R}^{N \times N} \quad (\texttt{FactorMatrix(np.zeros((N, 0)), np.zeros(N))}).
-$$
+```
 
 Both `offline` and `online` modes use the same implementation, and `synchronize()` is a no-op.
 

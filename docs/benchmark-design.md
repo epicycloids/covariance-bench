@@ -12,21 +12,21 @@ Let $`X(t) \in \mathbb{R}^N`$ denote a latent vector process over $`N`$ assets o
 
 The estimands are the first and second moments of the latent increment
 
-$$
+```math
 \Delta X(t_{\mathrm{start}}, t_{\mathrm{end}}) = X(t_{\mathrm{end}}) - X(t_{\mathrm{start}}) \in \mathbb{R}^N
-$$
+```
 
 conditional on the draw's piecewise-constant regime parameters:
 
-$$
+```math
 \mu = \mathbb{E}[\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}})] \in \mathbb{R}^N, \qquad \Sigma = \mathrm{Cov}(\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}})) \in \mathbb{R}^{N \times N}.
-$$
+```
 
 The implied uncentered second-moment matrix is
 
-$$
+```math
 M = \mathbb{E}\!\left[\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}}) \, \Delta X(t_{\mathrm{start}}, t_{\mathrm{end}})^\top\right] = \Sigma + \mu \mu^\top.
-$$
+```
 
 Both $`\mu`$ and $`\Sigma`$ are integrated interval quantities over $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$, expressed in the level units of $`X`$: under constant per-unit-time drift rate $`\mu_{\mathrm{rate}}`$ and covariance rate $`\Sigma_{\mathrm{rate}}`$, an interval of duration $`\Delta\tau = t_{\mathrm{end}} - t_{\mathrm{start}}`$ has $`\mu = \mu_{\mathrm{rate}} \Delta\tau`$ and $`\Sigma = \Sigma_{\mathrm{rate}} \Delta\tau`$, while the outer-product term $`\mu \mu^\top = (\Delta\tau)^2 \mu_{\mathrm{rate}} \mu_{\mathrm{rate}}^\top`$ scales quadratically with $`\Delta\tau`$.
 
@@ -62,9 +62,9 @@ Because arrival latencies vary across observations and corrections arrive after 
 
 At any cutoff timestamp $`t_{\mathrm{asof}}`$, let $`\mathcal{E}(t_{\mathrm{asof}}) = \{m : a_m \le t_{\mathrm{asof}}\}`$ be the prefix of events arriving on or before $`t_{\mathrm{asof}}`$. Replaying $`\mathcal{E}(t_{\mathrm{asof}})`$ in arrival order defines a finite map
 
-$$
+```math
 \mathcal{T}(t_{\mathrm{asof}}) : \mathcal{K}(t_{\mathrm{asof}}) \subset \{0, \dots, N-1\} \times [0, T] \longrightarrow \mathbb{R},
-$$
+```
 
 containing every key $`(i, t)`$ whose most recent operation in $`\mathcal{E}(t_{\mathrm{asof}})`$ is `UPSERT`.
 
@@ -152,15 +152,15 @@ Because an estimator may trade off ingestion work in `fit`/`update` against quer
 
 **Offline mode.** At each checkpoint $`c`$, a fresh estimator is constructed and fitted to the materialized snapshot before answering both queries:
 
-$$
+```math
 \mathrm{completed\_ns}_c = t_{\mathrm{create}, c} + t_{\mathrm{fit}, c} + t_{\mathrm{predict}, c, \mathrm{hist}} + t_{\mathrm{predict}, c, \mathrm{fore}}.
-$$
+```
 
 **Online mode.** Let $`\mathcal{U}_c`$ denote the batch `update` calls processed between checkpoint $`c-1`$ and checkpoint $`c`$ (containing $`N_{\mathrm{events}, c}`$ total events), with total update time $`t_{\mathrm{update}, c} = \sum_{b \in \mathcal{U}_c} t_{\mathrm{update}, b}`$. Then:
 
-$$
+```math
 \mathrm{completed\_ns}_c = \mathbf{1}_{\{c = 0\}} t_{\mathrm{create}} + t_{\mathrm{update}, c} + t_{\mathrm{predict}, c, \mathrm{hist}} + t_{\mathrm{predict}, c, \mathrm{fore}}.
-$$
+```
 
 For online trials, each query record also reports:
 
@@ -176,9 +176,9 @@ For online trials, each query record also reports:
 
 For a given `root_seed`, each scenario with identifier `scenario_id` is simulated across $`R_{\mathrm{rep}}`$ independent replications ($`r \in \{0, \dots, R_{\mathrm{rep}} - 1\}`$). The instance seed for replication $`r`$ is derived deterministically from the first 64 bits of a SHA-256 digest:
 
-$$
+```math
 \mathrm{seed}(r) = \mathrm{int}_{16}\!\left(\mathrm{SHA256}(\texttt{[root\_seed, scenario\_id, } r\texttt{]})[:16]\right).
-$$
+```
 
 Each synthetic dataset is evaluated across $`R_{\mathrm{time}}`$ cold-process timing repetitions ($`m \in \{0, \dots, R_{\mathrm{time}} - 1\}`$). The random seed used to sample correlation pairs, random portfolios, and Gaussian sub-blocks for query index $`q \in \{0, \dots, 5\}`$ is $`(\mathrm{seed}(r) \oplus \texttt{0xD7AD5C32}) + q \pmod{2^{64}}`$, which depends only on the dataset seed and query index.
 
@@ -192,9 +192,9 @@ The runner groups query outcomes by `(scenario_id, mode, track, checkpoint)`. Ea
 
 **Loss means and Monte Carlo standard errors.** For each metric $`\ell`$, timing repetitions within the same replication $`r`$ are averaged first: $`\bar{\ell}_r = \frac{1}{R_{\mathrm{time}}} \sum_{m=0}^{R_{\mathrm{time}}-1} \ell_{r,m}`$. If every trial in the group has a finite value for $`\ell`$ and `failures == 0`, the summary reports the replication mean and Monte Carlo standard error across the $`R_{\mathrm{rep}}`$ independent synthetic draws:
 
-$$
+```math
 \hat{\ell} = \frac{1}{R_{\mathrm{rep}}} \sum_{r=0}^{R_{\mathrm{rep}}-1} \bar{\ell}_r, \qquad \mathrm{SE}(\hat{\ell}) = \sqrt{\frac{1}{R_{\mathrm{rep}}(R_{\mathrm{rep}} - 1)} \sum_{r=0}^{R_{\mathrm{rep}}-1} (\bar{\ell}_r - \hat{\ell})^2} \quad (R_{\mathrm{rep}} > 1).
-$$
+```
 
 If any trial in the group fails or produces `null` for $`\ell`$, the summary sets `record[name] = null` and records `n_complete` (the number of replications in which all timing repeats produced a non-null value).
 

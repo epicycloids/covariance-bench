@@ -6,9 +6,9 @@ This document specifies the loss functions, numerical linear algebra routines, s
 
 For a query over an $`N`$-asset universe, let $`(\mu, \Sigma)`$ denote the ground-truth mean vector $`\mu \in \mathbb{R}^N`$ and covariance matrix $`\Sigma \in \mathbb{R}^{N \times N}`$ of the latent increment $`\Delta X = X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$, and let $`(\hat{\mu}, \hat{\Sigma})`$ denote the candidate estimator's predicted mean and covariance. The true and predicted second-moment matrices are
 
-$$
+```math
 M = \Sigma + \mu \mu^\top, \qquad \hat{M} = \hat{\Sigma} + \hat{\mu} \hat{\mu}^\top.
-$$
+```
 
 All reported metrics are losses to be minimized.
 
@@ -18,9 +18,9 @@ Before evaluating any metric, `_validate` verifies that both `prediction` and `t
 
 **`DenseMatrix(value)`**: `value` must have shape $`(N, N)`$, contain only finite entries, and satisfy the relative symmetry bound
 
-$$
+```math
 \max_{0 \le i, j < N} |\hat{\Sigma}_{ij} - \hat{\Sigma}_{ji}| \le 64 \varepsilon_{\mathrm{mach}} \, s_{\max}, \qquad s_{\max} = \max_{0 \le u, v < N} |\hat{\Sigma}_{uv}|,
-$$
+```
 
 evaluated in 128-row chunks (`_maxabs`).
 
@@ -55,9 +55,9 @@ When the true matrix norm in the denominator is zero, `_normalized` returns $`0.
 
 **`mean_mahalanobis`** weights the mean error vector $`\delta_\mu = \hat{\mu} - \mu`$ by the true precision matrix $`\Sigma^{-1}`$. When `truth.covariance` is a `FactorMatrix` with strictly positive specific variances $`d > 0`$ (which holds for all benchmark-generated truth), `_mean_mahalanobis` evaluates the exact full-dimension quadratic form $`\frac{1}{N} \delta_\mu^\top \Sigma^{-1} \delta_\mu`$ using the Woodbury identity (Section 3.3). When `truth.covariance` is a `DenseMatrix` (or has zero specific variances), it evaluates the full Cholesky solve if $`N \le N_{\mathrm{exact}}`$ (`exact_dense_limit`, default $`512`$), and otherwise averages the quadratic form over the declared sub-blocks $`\mathcal{B}_1, \dots, \mathcal{B}_m`$:
 
-$$
+```math
 \frac{1}{\sum_{b=1}^m |\mathcal{B}_b|} \sum_{b=1}^m (\hat{\mu}_{\mathcal{B}_b} - \mu_{\mathcal{B}_b})^\top \Sigma_{\mathcal{B}_b, \mathcal{B}_b}^{-1} (\hat{\mu}_{\mathcal{B}_b} - \mu_{\mathcal{B}_b}).
-$$
+```
 
 The evaluation scope (`"full"` or `"declared_block_average"`) is recorded in `metric_details["mean_mahalanobis"]`.
 
@@ -67,9 +67,9 @@ Let $`\mathcal{P} = \{(i_1, j_1), \dots, (i_P, j_P)\}`$ ($`0 \le i_p < j_p < N`$
 
 `correlation_mse` requires only $`N \ge 2`$ and strictly positive marginal variances ($`\hat{\Sigma}_{ii} > 0`$ and $`\Sigma_{ii} > 0`$ for all $`i \in \{0, \dots, N-1\}`$). In particular, an indefinite dense matrix whose diagonal entries are all strictly positive still has a well-defined `correlation_mse`. The predicted and true pairwise correlations
 
-$$
+```math
 \hat{C}_{ij} = \frac{\hat{\Sigma}_{ij}}{\sqrt{\hat{\Sigma}_{ii}} \sqrt{\hat{\Sigma}_{jj}}}, \qquad C_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}} \sqrt{\Sigma_{jj}}}
-$$
+```
 
 are computed by dividing sequentially by $`\min(\sqrt{\Sigma_{ii}}, \sqrt{\Sigma_{jj}})`$ and $`\max(\sqrt{\Sigma_{ii}}, \sqrt{\Sigma_{jj}})`$ to avoid intermediate underflow or overflow, and `correlation_mse` is their mean squared difference over $`\mathcal{P}`$.
 
@@ -88,21 +88,21 @@ Given `block_size` $`S_{\mathrm{block}} \ge 1`$ (default $`32`$) and `block_coun
 
 For each block $`\mathcal{B}_b`$, let $`\hat{\mu}_b, \mu_b \in \mathbb{R}^{k_b}`$ and $`\hat{\Sigma}_b, \Sigma_b \in \mathbb{R}^{k_b \times k_b}`$ denote the subvectors and principal submatrices on $`\mathcal{B}_b`$. When $`\hat{\Sigma}_b \succ 0`$ and $`\Sigma_b \succ 0`$, define the block QLIKE covariance divergence
 
-$$
+```math
 \ell_{\mathrm{QLIKE}}(\hat{\Sigma}_b, \Sigma_b) = \mathrm{tr}(\hat{\Sigma}_b^{-1} \Sigma_b) + \ln\det(\hat{\Sigma}_b) - \ln\det(\Sigma_b) - k_b \ge 0
-$$
+```
 
 and the block Gaussian Kullback–Leibler divergence from $`\mathcal{N}(\mu_b, \Sigma_b)`$ to $`\mathcal{N}(\hat{\mu}_b, \hat{\Sigma}_b)`$:
 
-$$
+```math
 D_{\mathrm{KL}}\!\left(\mathcal{N}(\mu_b, \Sigma_b) \parallel \mathcal{N}(\hat{\mu}_b, \hat{\Sigma}_b)\right) = \frac{1}{2}\left(\ell_{\mathrm{QLIKE}}(\hat{\Sigma}_b, \Sigma_b) + (\hat{\mu}_b - \mu_b)^\top \hat{\Sigma}_b^{-1} (\hat{\mu}_b - \mu_b)\right) \ge 0.
-$$
+```
 
 Both metrics are normalized per asset across the union of the evaluated blocks ($`K_{\mathrm{total}} = \sum_{b=1}^m k_b`$):
 
-$$
+```math
 \mathrm{covariance\_qlike} = \frac{1}{K_{\mathrm{total}}} \sum_{b=1}^m \ell_{\mathrm{QLIKE}}(\hat{\Sigma}_b, \Sigma_b), \qquad \mathrm{gaussian\_kl} = \frac{1}{K_{\mathrm{total}}} \sum_{b=1}^m D_{\mathrm{KL}}\!\left(\mathcal{N}(\mu_b, \Sigma_b) \parallel \mathcal{N}(\hat{\mu}_b, \hat{\Sigma}_b)\right).
-$$
+```
 
 **Domain and all-or-nothing block policy.** Before evaluating the blocks, `score` checks whether full-matrix eigenvalue diagnosis (`_diagnose`, performed on `DenseMatrix` inputs with $`N \le N_{\mathrm{exact}}`$) classified either $`\hat{\Sigma}`$ or $`\Sigma`$ as `"indefinite"` (minimum eigenvalue below $`-\tau`$). If neither is classified as full-matrix `"indefinite"`, `_gaussian_blocks` runs Cholesky factorization (`cho_factor`) only on the declared principal blocks $`\mathcal{B}_1, \dots, \mathcal{B}_m`$ (so a globally singular positive semidefinite matrix can pass when every declared proper block is strictly positive definite). If full-matrix diagnosis is `"indefinite"` or Cholesky factorization fails on any declared block $`\mathcal{B}_b`$, both `gaussian_kl` and `covariance_qlike` are set to `None` and the failed block indices are recorded in `metric_details["gaussian_scores"]["failed_blocks"]`. Surviving blocks are not averaged on their own.
 
@@ -114,15 +114,15 @@ $$
 
 To prevent floating-point overflow or underflow when squaring covariance entries (for example, at extreme scales such as $`10^{\pm 120}`$), `score` defines two positive scalar units:
 
-$$
+```math
 u_\Sigma = \sqrt{\max(\|\hat{\Sigma}\|_{\max}, \, \|\Sigma\|_{\max})} \quad (\text{or } 1 \text{ if } 0), \qquad u_M = \max(u_\Sigma, \, \|\hat{\mu}\|_\infty, \, \|\mu\|_\infty).
-$$
+```
 
 `_ScaledMatrix(matrix, unit, mean)` represents $`\tilde{\Sigma} = u_\Sigma^{-2} \Sigma`$ for covariance calculations and $`\tilde{M} = u_M^{-2} (\Sigma + \mu\mu^\top)`$ for second-moment calculations. When `matrix` is a `FactorMatrix(B, d)` and `mean` $`\mu`$ is provided, `_ScaledMatrix` appends $`u_M^{-1} \mu`$ as an extra column of the scaled loadings $`u_M^{-1} B`$:
 
-$$
+```math
 \tilde{M} = \begin{bmatrix} u_M^{-1} B & u_M^{-1} \mu \end{bmatrix} \begin{bmatrix} u_M^{-1} B & u_M^{-1} \mu \end{bmatrix}^\top + \mathrm{diag}(u_M^{-2} d),
-$$
+```
 
 reducing second-moment factor calculations to the same low-rank algebra as covariance calculations with rank $`K + 1`$.
 
@@ -132,9 +132,9 @@ When both `left` and `right` are in factor form, $`\hat{\Sigma} = A A^\top + \ma
 
 **Single factor matrix norm (`_norm_sq`).** For $`\Sigma = B B^\top + \mathrm{diag}(d_B)`$, expanding the trace gives
 
-$$
+```math
 \|\Sigma\|_F^2 = \mathrm{tr}\!\left((B B^\top + \mathrm{diag}(d_B))^2\right) = \|B^\top B\|_F^2 + 2 d_B^\top \mathrm{diag}(B B^\top) + \|d_B\|_2^2,
-$$
+```
 
 where $`B^\top B \in \mathbb{R}^{K_t \times K_t}`$ and $`\mathrm{diag}(B B^\top)_i = \|B_{i\cdot}\|_2^2`$.
 
@@ -142,15 +142,15 @@ where $`B^\top B \in \mathbb{R}^{K_t \times K_t}`$ and $`\mathrm{diag}(B B^\top)
 
 Instead, let $`\delta_d = d_A - d_B`$ and write the low-rank difference as $`\Delta_{\mathrm{low}} = A A^\top - B B^\top = J S J^\top`$, where
 
-$$
+```math
 J = \begin{bmatrix} A & B \end{bmatrix} \in \mathbb{R}^{N \times (K_p + K_t)}, \qquad S = \mathrm{diag}(I_{K_p}, \, -I_{K_t}).
-$$
+```
 
 Compute the thin QR factorization $`J = Q R`$, where $`Q \in \mathbb{R}^{N \times r}`$ has orthonormal columns ($`Q^\top Q = I_r`$, $`r \le K_p + K_t`$) and $`R \in \mathbb{R}^{r \times (K_p + K_t)}`$ is upper trapezoidal. By orthogonal invariance of the Frobenius norm,
 
-$$
+```math
 \|\Delta_{\mathrm{low}}\|_F^2 = \|Q (R S R^\top) Q^\top\|_F^2 = \|R S R^\top\|_F^2,
-$$
+```
 
 where $`C = R S R^\top \in \mathbb{R}^{r \times r}`$ cancels matched subspaces prior to squaring.
 
@@ -165,15 +165,15 @@ When `truth.covariance` is a `FactorMatrix(B, d)` with $`d > 0`$, we must evalua
 
 Let $`u = \sqrt{\max_i \Sigma_{ii}}`$, $`\delta = (\hat{\mu} - \mu)/u`$, $`s_i = \delta_i / (\sqrt{d_i}/u) = (\hat{\mu}_i - \mu_i)/\sqrt{d_i}`$, and $`F = \mathrm{diag}(d)^{-1/2} B \in \mathbb{R}^{N \times K}`$. Then
 
-$$
+```math
 (\hat{\mu} - \mu)^\top \Sigma^{-1} (\hat{\mu} - \mu) = s^\top (I_N + F F^\top)^{-1} s.
-$$
+```
 
 By the Woodbury matrix identity, $`(I_N + F F^\top)^{-1} = I_N - F G^{-1} F^\top`$ where $`G = I_K + F^\top F \in \mathbb{R}^{K \times K}`$. Rather than subtracting $`s^\top F G^{-1} F^\top s`$ from $`\|s\|_2^2`$, define $`c = G^{-1} F^\top s \in \mathbb{R}^K`$ and the residual $`r = s - F c \in \mathbb{R}^N`$. Using $`(I_K + F^\top F)c = F^\top s`$, expanding $`\|r\|_2^2 + \|c\|_2^2`$ gives:
 
-$$
+```math
 \|r\|_2^2 + \|c\|_2^2 = s^\top s - 2 s^\top F c + c^\top (F^\top F + I_K) c = s^\top s - s^\top F G^{-1} F^\top s = s^\top (I_N + F F^\top)^{-1} s.
-$$
+```
 
 Thus `_mean_mahalanobis` solves the $`K \times K`$ positive definite system $`G c = F^\top s`$ via Cholesky factorization and returns $`(\|r\|_2^2 + \|c\|_2^2)/N`$ in $`O(N K^2 + K^3)`$ operations (or $`\|s\|_2^2 / N`$ directly when $`K = 0`$).
 
@@ -183,9 +183,9 @@ When `trace_probes` $`P \ge 2`$ and $`N > N_{\mathrm{exact}}`$, `covariance_nmse
 
 For any matrix $`A \in \mathbb{R}^{N \times N}`$, $`\mathbb{E}[\|A v_p\|_2^2] = \mathrm{tr}(A^\top A) = \|A\|_F^2`$. Setting $`N_p = \|(\hat{\Sigma} - \Sigma) v_p\|_2^2`$ and $`D_p = \|\Sigma v_p\|_2^2`$, `_trace_ratio` computes
 
-$$
+```math
 \widehat{\mathrm{NMSE}}_P = \frac{\frac{1}{P} \sum_{p=1}^P N_p}{\frac{1}{P} \sum_{p=1}^P D_p},
-$$
+```
 
 using only matrix-vector products `matvec`. While the numerator and denominator sample means are unbiased estimators of $`\|\hat{\Sigma} - \Sigma\|_F^2`$ and $`\|\Sigma\|_F^2`$, their ratio need not be unbiased. `metric_details` retains all $`P`$ probe values $`(N_p)_{p=1}^P`$, $`(D_p)_{p=1}^P`$, and their $`2 \times 2`$ sample covariance matrix. This probe variance reflects evaluator trace-approximation noise rather than estimator sampling uncertainty.
 
@@ -230,8 +230,8 @@ Because `"partial"` records are checked per selected objective, a `"partial"` re
 
 Within a single comparison group, let $`v^{(a)} = (v_1^{(a)}, \dots, v_M^{(a)}) \in \mathbb{R}^M`$ denote the vector of selected objective values for eligible record $`a`$. Because all timing and loss objectives are minimized, record $`b`$ **dominates** record $`a`$ ($`v^{(b)} \prec v^{(a)}`$) if and only if
 
-$$
+```math
 \forall m \in \{1, \dots, M\}, \quad v_m^{(b)} \le v_m^{(a)} \qquad \text{and} \qquad \exists m \in \{1, \dots, M\}, \quad v_m^{(b)} < v_m^{(a)}.
-$$
+```
 
 The group's `frontier` consists of all eligible records $`a`$ in the group for which no record $`b`$ in the group satisfies $`v^{(b)} \prec v^{(a)}`$. Records with identical objective vectors ($`v^{(a)} = v^{(b)}`$) do not dominate one another and are both retained in `frontier`.

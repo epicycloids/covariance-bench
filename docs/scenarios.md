@@ -10,17 +10,17 @@ Each scenario instance is generated from a parameter dictionary `Scenario.config
 
 Let $`N \ge 1`$ be the number of assets (`n_assets`), $`T > 0`$ be the time horizon (`horizon`, default $`1.0`$), and $`S \ge 16`$ be the number of grid steps (`grid_steps`, default $`256`$). The master time grid consists of $`S + 1`$ equally spaced timestamps:
 
-$$
+```math
 t_s = s \Delta t, \qquad \Delta t = \frac{T}{S}, \qquad s \in \{0, 1, \dots, S\}.
-$$
+```
 
 All observation timestamps and query window endpoints lie on $`\{t_0, \dots, t_S\}`$.
 
 Given a regime count $`R \in \{1, \dots, S\}`$ (`regimes`, default $`1`$), the step index set $`\{0, \dots, S-1\}`$ is partitioned into $`R`$ contiguous intervals $`[s_{r-1}, s_r)`$ for $`r \in \{1, \dots, R\}`$ with integer boundary indices
 
-$$
+```math
 s_r = \left\lfloor \frac{r S}{R} \right\rfloor, \qquad 0 = s_0 < s_1 < \dots < s_R = S.
-$$
+```
 
 Regime $`r`$ governs the physical time interval $`[t_{s_{r-1}}, t_{s_r}]`$ of duration $`(s_r - s_{r-1})\Delta t`$.
 
@@ -30,37 +30,37 @@ For each regime $`r \in \{1, \dots, R\}`$, `_draw_regime` draws a per-unit-time 
 
 **Marginal variance rates.** Given the diagonal spread parameter $`\kappa \ge 1`$ (`condition`, default $`10.0`$), draw independent log-uniform marginal variance rates for each asset $`i \in \{0, \dots, N-1\}`$:
 
-$$
+```math
 v_{r,i} = \exp(U_{r,i}), \qquad U_{r,i} \stackrel{\mathrm{i.i.d.}}{\sim} \mathrm{Uniform}\!\left(-\frac{1}{2}\ln\kappa, \, \frac{1}{2}\ln\kappa\right).
-$$
+```
 
 Thus $`v_{r,i} \in [\kappa^{-1/2}, \kappa^{1/2}]`$, and the ratio between the upper and lower support bounds of $`v_{r,i}`$ is $`\kappa`$.
 
 **Idiosyncratic variance shares.** Draw independent specific shares for each asset $`i \in \{0, \dots, N-1\}`$:
 
-$$
+```math
 w_{r,i} \stackrel{\mathrm{i.i.d.}}{\sim} \mathrm{Uniform}(0.2, 0.8).
-$$
+```
 
 **Factor loadings and specific variances.** When $`K > 0`$, draw a Gaussian matrix $`G_r \in \mathbb{R}^{N \times K}`$ with i.i.d. $`\mathcal{N}(0, 1)`$ entries, normalize each row $`u_{r,i} = G_{r,i\cdot} / \|G_{r,i\cdot}\|_2`$, and set
 
-$$
+```math
 B_{r,i\cdot} = \sqrt{v_{r,i}(1 - w_{r,i})}\, u_{r,i}, \qquad d_{r,i} = v_{r,i} w_{r,i}.
-$$
+```
 
 When $`K = 0`$, set $`B_r \in \mathbb{R}^{N \times 0}`$ (empty loading matrix) and $`d_{r,i} = v_{r,i}`$. In both cases, the per-unit-time covariance rate matrix is
 
-$$
+```math
 \Sigma_r = B_r B_r^\top + \mathrm{diag}(d_r).
-$$
+```
 
 Because $`\|u_{r,i}\|_2 = 1`$, the $`i`$-th diagonal entry of $`\Sigma_r`$ is $`(\Sigma_r)_{ii} = v_{r,i}(1 - w_{r,i}) + v_{r,i} w_{r,i} = v_{r,i}`$, and because $`d_{r,i} \ge 0.2 \kappa^{-1/2} > 0`$, $`\Sigma_r`$ is strictly positive definite.
 
 **Drift rates.** Given the drift scale $`\alpha_\mu \ge 0`$ (`drift_strength`, default $`0.2`$), draw
 
-$$
+```math
 \mu_{r,i} = \alpha_\mu \sqrt{\frac{v_{r,i}}{T}}\, Z_{r,i}, \qquad Z_{r,i} \stackrel{\mathrm{i.i.d.}}{\sim} \mathcal{N}(0, 1).
-$$
+```
 
 Over the full horizon $`T`$, the drift displacement $`\mu_{r,i} T`$ has root-mean-square magnitude $`\alpha_\mu \sqrt{v_{r,i} T}`$, proportional to the asset's horizon standard deviation $`\sqrt{v_{r,i} T}`$.
 
@@ -68,39 +68,39 @@ Over the full horizon $`T`$, the drift displacement $`\mu_{r,i} T`$ has root-mea
 
 The latent level process $`X(t_s) \in \mathbb{R}^N`$ is initialized at $`X(0) = 0`$ and evolves across grid steps $`s \in \{0, \dots, S-1\}`$ according to
 
-$$
+```math
 X(t_{s+1}) - X(t_s) = \mu_r \Delta t + \xi_s, \qquad s \in [s_{r-1}, s_r),
-$$
+```
 
 where the zero-mean stochastic innovations $`\xi_s \in \mathbb{R}^N`$ are conditionally independent across $`s`$ given $`\{(\mu_r, B_r, d_r)\}_{r=1}^R`$.
 
 At step $`s \in [s_{r-1}, s_r)`$, draw independent standard normal vectors $`z_s \sim \mathcal{N}(0, I_K)`$ and $`\varepsilon_s \sim \mathcal{N}(0, I_N)`$, and define the unit-rate Gaussian shock
 
-$$
+```math
 \eta_s = B_r z_s + \mathrm{diag}(d_r)^{1/2} \varepsilon_s \sim \mathcal{N}(0, \Sigma_r).
-$$
+```
 
 Three innovation distributions (`distribution`) are supported, all sharing the exact conditional first and second moments $`\mathbb{E}[\xi_s] = 0`$ and $`\mathrm{Cov}(\xi_s) = \Sigma_r \Delta t`$.
 
 ### 2.1 Gaussian Increments (`gaussian`)
 
-$$
+```math
 \xi_s = \sqrt{\Delta t}\, \eta_s \sim \mathcal{N}(0, \Sigma_r \Delta t).
-$$
+```
 
 ### 2.2 Multivariate Student-$`t`$ Increments (`student_t`)
 
 Given degrees of freedom $`\nu > 8`$ (`df`, default $`10.0`$), draw an independent scalar chi-squared random variable $`W_s \sim \chi^2(\nu)`$ at step $`s`$ and set
 
-$$
+```math
 \xi_s = \sqrt{\Delta t} \sqrt{\frac{\nu - 2}{W_s}}\, \eta_s.
-$$
+```
 
 **Moment verification.** Because $`W_s`$ is independent of $`\eta_s`$ and $`\mathbb{E}[W_s^{-1}] = \frac{1}{\nu - 2}`$ for $`\nu > 2`$, we have $`\mathbb{E}[\xi_s] = 0`$ and
 
-$$
+```math
 \mathrm{Cov}(\xi_s) = \Delta t \, \mathbb{E}\!\left[\frac{\nu - 2}{W_s}\right] \mathrm{Cov}(\eta_s) = \Sigma_r \Delta t.
-$$
+```
 
 Because the radial multiplier $`\sqrt{(\nu - 2)/W_s}`$ is shared across all $`N`$ coordinates at step $`s`$, $`\xi_s`$ follows an elliptical multivariate Student-$`t`$ distribution with tail dependence and common volatility bursts even when $`K = 0`$. The requirement $`\nu > 8`$ guarantees finite moments up to order $`8`$, ensuring that fourth-moment sample covariance variances are finite.
 
@@ -108,23 +108,23 @@ Because the radial multiplier $`\sqrt{(\nu - 2)/W_s}`$ is shared across all $`N`
 
 Given jump covariance share $`\theta_J \in [0, 1]`$ (`jump_fraction`, default $`0.35`$) and Poisson jump intensity $`\lambda_J > 0`$ (`jump_rate`, default $`8.0`$), draw independent Poisson jump counts and standard normal jump amplitudes:
 
-$$
+```math
 N_{s,\mathrm{fac}} \sim \mathrm{Poisson}(\lambda_J \Delta t)^{\otimes K}, \qquad N_{s,\mathrm{spec}} \sim \mathrm{Poisson}(\lambda_J \Delta t)^{\otimes N}, \qquad \zeta_s \sim \mathcal{N}(0, I_K), \qquad \omega_s \sim \mathcal{N}(0, I_N),
-$$
+```
 
 and set
 
-$$
+```math
 \xi_s = \sqrt{(1 - \theta_J)\Delta t}\, \eta_s + \sqrt{\frac{\theta_J}{\lambda_J}} B_r \!\left(\sqrt{N_{s,\mathrm{fac}}} \odot \zeta_s\right) + \sqrt{\frac{\theta_J}{\lambda_J}} \mathrm{diag}(d_r)^{1/2} \!\left(\sqrt{N_{s,\mathrm{spec}}} \odot \omega_s\right),
-$$
+```
 
 where $`\odot`$ denotes elementwise multiplication.
 
 **Moment verification.** Conditional on a count $`M \sim \mathrm{Poisson}(\lambda_J \Delta t)`$, the sum of $`M`$ independent $`\mathcal{N}(0, \theta_J / \lambda_J)`$ jumps has distribution $`\mathcal{N}(0, M \theta_J / \lambda_J) \stackrel{d}{=} \sqrt{\theta_J / \lambda_J}\sqrt{M}\, Z`$ with $`Z \sim \mathcal{N}(0, 1)`$. By the law of total covariance,
 
-$$
+```math
 \mathrm{Cov}\!\left(\sqrt{N_{s,\mathrm{fac}}} \odot \zeta_s\right) = \mathbb{E}[N_{s,\mathrm{fac},1}] I_K = (\lambda_J \Delta t) I_K, \qquad \mathrm{Cov}\!\left(\sqrt{N_{s,\mathrm{spec}}} \odot \omega_s\right) = (\lambda_J \Delta t) I_N.
-$$
+```
 
 Therefore, the diffusion term contributes $`(1 - \theta_J)\Sigma_r \Delta t`$ and the factor and idiosyncratic jump terms contribute $`\frac{\theta_J}{\lambda_J} (\lambda_J \Delta t) (B_r B_r^\top + \mathrm{diag}(d_r)) = \theta_J \Sigma_r \Delta t`$, yielding $`\mathrm{Cov}(\xi_s) = \Sigma_r \Delta t`$.
 
@@ -132,27 +132,27 @@ Therefore, the diffusion term contributes $`(1 - \theta_J)\Sigma_r \Delta t`$ an
 
 Consider any query interval $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$ with endpoints on the master time grid ($`0 \le t_{\mathrm{start}} < t_{\mathrm{end}} \le T`$). For each regime $`r \in \{1, \dots, R\}`$, let
 
-$$
+```math
 \tau_r = \max\!\left(0, \, \min(t_{\mathrm{end}}, t_{s_r}) - \max(t_{\mathrm{start}}, t_{s_{r-1}})\right)
-$$
+```
 
 denote the duration of overlap between $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$ and regime $`r`$. Because step increments are conditionally independent across $`s`$, the exact mean and covariance of $`\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}}) = X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$ are the sums of the step moments over the interval:
 
-$$
+```math
 \mu([t_{\mathrm{start}}, t_{\mathrm{end}}]) = \sum_{r=1}^R \tau_r \mu_r, \qquad \Sigma([t_{\mathrm{start}}, t_{\mathrm{end}}]) = \sum_{r=1}^R \tau_r \Sigma_r = \sum_{r=1}^R \tau_r B_r B_r^\top + \mathrm{diag}\!\left(\sum_{r=1}^R \tau_r d_r\right).
-$$
+```
 
 Let $`r_1 < r_2 < \dots < r_m`$ index the $`m \le R`$ regimes with $`\tau_{r_j} > 0`$. Defining the concatenated loading matrix and integrated specific variance vector
 
-$$
+```math
 B_{\mathrm{query}} = \begin{bmatrix} \sqrt{\tau_{r_1}} B_{r_1} & \sqrt{\tau_{r_2}} B_{r_2} & \cdots & \sqrt{\tau_{r_m}} B_{r_m} \end{bmatrix} \in \mathbb{R}^{N \times (mK)}, \qquad d_{\mathrm{query}} = \sum_{j=1}^m \tau_{r_j} d_{r_j} \in \mathbb{R}_{>0}^N,
-$$
+```
 
 we obtain the exact representation
 
-$$
+```math
 \Sigma([t_{\mathrm{start}}, t_{\mathrm{end}}]) = B_{\mathrm{query}} B_{\mathrm{query}}^\top + \mathrm{diag}(d_{\mathrm{query}}).
-$$
+```
 
 `_integrated` stores ground truth as `Prediction(mean, FactorMatrix(B_query, d_query))`. This representation uses $`O(N(mK + 1))`$ storage (including the length-$`N`$ `mean` and `d_query` vectors when $`K = 0`$). When a candidate also returns a `FactorMatrix` of rank $`K_p`$, exact Frobenius scoring takes $`O(N(K_p + mK + 1)^2)`$ time; when a candidate returns a `DenseMatrix`, the scorer streams over 128-row blocks in $`O(N)`$ temporary memory, reconstructing the 128-row truth slices from the rank-$`mK`$ factor truth in $`O(N^2(mK + 1))`$ time.
 
@@ -171,15 +171,15 @@ For each asset $`i \in \{0, \dots, N-1\}`$, `_sample_indices` selects a strictly
 
 At each sampled grid index $`s = s_{i,k} \in \mathcal{S}_i`$, the noisy level observation is
 
-$$
+```math
 Y_{i,k} = X_i(t_{s_{i,k}}) + \varepsilon_{i,k}, \qquad k \in \{0, \dots, m_i - 1\}.
-$$
+```
 
 Given `noise_scale` $`\sigma_{\mathrm{noise}} \ge 0`$ (default $`0.03`$), asset $`i`$'s noise standard deviation is calibrated to its initial regime variance rate $`v_{1,i} = (\Sigma_1)_{ii}`$:
 
-$$
+```math
 \sigma_{\mathrm{obs}, i} = \sigma_{\mathrm{noise}} \sqrt{v_{1,i} T}.
-$$
+```
 
 Four noise specifications (`noise`) are supported:
 
@@ -206,9 +206,9 @@ All emitted events across all assets are sorted in non-decreasing order of arriv
 
 With window width $`w = \max(2, \lfloor S/6 \rfloor)`$ grid steps, each dataset evaluates three checkpoint step indices:
 
-$$
+```math
 c_0 = \left\lfloor \frac{S}{3} \right\rfloor, \qquad c_1 = \left\lfloor \frac{3S}{5} \right\rfloor, \qquad c_2 = \left\lfloor \frac{4S}{5} \right\rfloor.
-$$
+```
 
 At each checkpoint $`c_q`$ ($`q \in \{0, 1, 2\}`$), with cutoff time $`t_{\mathrm{asof}} = t_{c_q}`$, two queries of physical duration $`w \Delta t`$ are generated:
 

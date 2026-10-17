@@ -14,9 +14,9 @@ The window is partitioned into `bins` ($`B \ge 3`$, default `32`) equally spaced
 
 With diagonal floor rate `floor` ($`\phi \ge 0`$, default `1e-8`), the estimator returns
 
-$$
+```math
 \hat{\mu} = \Delta\tau \, \hat{\mu}_{\mathrm{rate}}, \qquad \hat{\Sigma} = L L^\top + \mathrm{diag}(\phi \Delta\tau \, \mathbf{1}_N)
-$$
+```
 
 as a `FactorMatrix` without allocating a dense $`N \times N`$ matrix.
 

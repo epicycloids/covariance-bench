@@ -4,9 +4,9 @@ A benchmark harness for evaluating code that estimates latent price-increment mo
 
 For an $`N`$-asset universe with latent level process $`X(t) \in \mathbb{R}^N`$, a query over the physical time interval $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$ requests the mean vector $`\mu`$, covariance matrix $`\Sigma`$, and implied second-moment matrix $`M`$ of the increment $`\Delta X = X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$:
 
-$$
+```math
 \mu = \mathbb{E}[\Delta X], \qquad \Sigma = \mathrm{Cov}(\Delta X), \qquad M = \mathbb{E}[\Delta X \, \Delta X^\top] = \Sigma + \mu \mu^\top.
-$$
+```
 
 Input observations are real-valued level proxies already in estimation units (such as log-prices). Candidates implement a fixed Python interface ([`src/covbench/api.py`](src/covbench/api.py)); their internals may use any language, compiler, or hardware accelerator.
 

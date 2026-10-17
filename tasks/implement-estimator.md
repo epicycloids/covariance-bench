@@ -23,15 +23,15 @@ Keep tunable hyperparameters in `config` so the runner can record and reproduce 
 
 For an $`N`$-asset universe with latent level process $`X(t) \in \mathbb{R}^N`$, a query over the physical time interval $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$ at cutoff timestamp $`t_{\mathrm{asof}}`$ requests the mean vector $`\mu \in \mathbb{R}^N`$ and covariance matrix $`\Sigma \in \mathbb{R}^{N \times N}`$ of the latent increment $`\Delta X = X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$:
 
-$$
+```math
 \mu = \mathbb{E}[X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})], \qquad \Sigma = \mathrm{Cov}(X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})).
-$$
+```
 
 The implied uncentered second-moment matrix is
 
-$$
+```math
 M = \Sigma + \mu \mu^\top.
-$$
+```
 
 - **Historical queries** (`track = "historical"`, $`t_{\mathrm{start}} < t_{\mathrm{end}} = t_{\mathrm{asof}}`$) estimate the marginal moments of the latent increment over the observed physical-time window (rather than the posterior moments of the realized path conditional on observations).
 - **Forecast queries** (`track = "forecast"`, $`t_{\mathrm{asof}} = t_{\mathrm{start}} < t_{\mathrm{end}}`$) predict the marginal moments of the latent increment over the subsequent interval using only information that has arrived by $`t_{\mathrm{asof}}`$.
