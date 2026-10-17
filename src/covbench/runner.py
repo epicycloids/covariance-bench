@@ -1,4 +1,4 @@
-"""Fresh-process evaluation with causal input delivery and scored timed outputs."""
+"""Subprocess trial runner, summary aggregation, and lossless report regrading."""
 from __future__ import annotations
 
 from dataclasses import asdict
@@ -32,6 +32,7 @@ def arrays(record):
 
 
 def manifest(path):
+    """Load and validate ``candidate.json`` from a candidate directory."""
     data = json.loads((Path(path) / "candidate.json").read_text())
     if data.get("api_version") != API_VERSION:
         raise ValueError("candidate api_version must be 1")
@@ -52,6 +53,8 @@ def manifest(path):
 
 
 class Worker:
+    """Manage a single-trial candidate worker subprocess and enforce timeout/RSS limits."""
+
     def __init__(self, candidate, folder, *, threads, timeout, memory_mib):
         self.folder = Path(folder)
         self.folder.mkdir(parents=True)
@@ -148,6 +151,7 @@ def _input(folder, arrays):
 
 
 def run_trial(dataset, candidate, spec, folder, *, mode, threads, timeout, memory_mib, batch_size, scoring_seed):
+    """Execute one cold-process trial for ``dataset`` and ``mode``, returning stage timings and query scores."""
     worker = Worker(candidate, folder, threads=threads, timeout=timeout, memory_mib=memory_mib)
     records, updates, fits, creations = [], [], [], []
     peak = 0
@@ -202,8 +206,8 @@ def run_trial(dataset, candidate, spec, folder, *, mode, threads, timeout, memor
             phase_updates = updates[phase_update_start:]
             update_ns = sum(r["duration_ns"] for r in phase_updates)
             event_count = sum(r["n_events"] for r in phase_updates)
-            # Both predictions are required at each checkpoint. Count all query
-            # work so returning cheap update calls cannot hide deferred fitting.
+            # Sum all checkpoint work (creation, fit or intervening update batches,
+            # and both checkpoint predictions) into completed_ns.
             work = update_ns + sum(r["predict_ns"] for r in phase)
             if mode == "offline":
                 work += fit["duration_ns"] + creation["duration_ns"]
@@ -232,6 +236,13 @@ def run_trial(dataset, candidate, spec, folder, *, mode, threads, timeout, memor
 
 
 def summarize(trials, common):
+    """Aggregate per-trial records by (scenario_id, mode, track, checkpoint).
+
+    Timings are summarized by their sample median across all trials in the group,
+    peak RSS by the maximum, and statistical losses by averaging timing repeats
+    within each replication before computing the mean and Monte Carlo standard
+    error across replications.
+    """
     grouped = {}
     for trial in trials:
         for row in trial["records"]:
@@ -271,6 +282,7 @@ def summarize(trials, common):
 
 def evaluate(candidate, suite, output, *, root_seed, replications=3, timing_repeats=3,
              modes=None, threads=1, timeout=60., memory_mib=1024, batch_size=128):
+    """Freeze ``candidate``, run all scenarios in ``suite``, and write ``<output>/results.json``."""
     if min(replications, timing_repeats, threads, batch_size) < 1 or timeout <= 0 or memory_mib < 0:
         raise ValueError("counts and timeout must be positive; memory_mib must be nonnegative")
     candidate, suite, output = Path(candidate).resolve(), Path(suite).resolve(), Path(output).resolve()
@@ -302,8 +314,7 @@ def evaluate(candidate, suite, output, *, root_seed, replications=3, timing_repe
             inputs_hash = digest(dict(arrays={name: [str(value.dtype), value.shape, file_hash_bytes(value.tobytes())]
                                              for name, value in dict(arrays(dataset.events), arrival=dataset.arrival).items()},
                                       queries=[asdict(q) for q in dataset.queries]))
-            # Fresh workers each repetition/mode; no final-stream warmup or
-            # state reused between independent trials.
+            # Each timing repetition and execution mode runs in a fresh worker process.
             for repeat in range(timing_repeats):
                 for mode in selected_modes:
                     folder = output / "trials" / uuid.uuid4().hex
@@ -333,10 +344,11 @@ def file_hash_bytes(value):
 
 
 def regrade(report_path, output_path):
-    """Score saved measured predictions under the current scorer; keep timing identity.
+    """Recompute losses from saved ``prediction-XXXX.npz`` files under the current scorer.
 
-    Output stays beside the original report so trial paths remain relative.
-    The original report is preserved, and no candidate code is executed.
+    Verifies that regenerated dataset inputs and saved prediction files match
+    their recorded SHA-256 digests, updates metric scores and summaries, and
+    writes a new report alongside ``report_path`` preserving measurement timings.
     """
     report_path, output_path = Path(report_path).resolve(), Path(output_path).resolve()
     if output_path.parent != report_path.parent or output_path == report_path or output_path.exists():

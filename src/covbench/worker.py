@@ -1,7 +1,7 @@
-"""A persistent candidate process. Only current inputs arrive over the protocol.
+"""Worker subprocess executing candidate API stages over a JSON stdin/stdout protocol.
 
-This process boundary gives failure isolation, not a filesystem security sandbox.
-stdout is reserved for JSON replies; candidate Python output goes to stderr.
+Standard output is reserved for JSON protocol replies; candidate output to
+``sys.stdout`` is redirected to ``sys.stderr`` during stage execution.
 """
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ from covbench.api import DenseMatrix, Events, FactorMatrix, Observations, Predic
 
 
 def materialize(prediction, n):
+    """Validate a candidate Prediction and copy its arrays to contiguous float64 host memory."""
     if not isinstance(prediction, Prediction):
         raise TypeError("predict must return covbench.api.Prediction")
     def host(value):
@@ -56,6 +57,7 @@ def materialize(prediction, n):
 
 
 def peak_rss():
+    """Return the worker's peak resident set size (VmHWM) in bytes on Linux, or None."""
     status = Path("/proc/self/status")
     if status.exists():
         return int(next(line.split()[1] for line in status.read_text().splitlines() if line.startswith("VmHWM:"))) * 1024
@@ -72,10 +74,10 @@ def main():
     output_id = 0
 
     def sync():
+        """Synchronize the candidate estimator and any initialized PyTorch/CuPy CUDA streams."""
         if estimator is not None:
             estimator.synchronize()
-        # These libraries synchronize the current CUDA device if already loaded.
-        # Other devices require the candidate's mandatory synchronization hook.
+        # Synchronize the active CUDA device if torch or cupy has been imported.
         torch = sys.modules.get("torch")
         if torch is not None and torch.cuda.is_initialized():
             torch.cuda.synchronize()

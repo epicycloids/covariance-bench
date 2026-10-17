@@ -1,4 +1,4 @@
-"""Pareto frontiers within explicitly matching benchmark regimes."""
+"""Multi-objective Pareto frontier extraction within matched comparison groups."""
 from __future__ import annotations
 
 from collections.abc import Mapping
@@ -8,6 +8,7 @@ import numbers
 
 
 def _path(record, path):
+    """Resolve a dot-separated field path inside a nested mapping."""
     value = record
     for key in path.split("."):
         if not isinstance(value, Mapping) or key not in value:
@@ -17,6 +18,7 @@ def _path(record, path):
 
 
 def _names(values, name):
+    """Validate that ``values`` is a non-empty sequence of distinct dot-separated paths."""
     values = tuple(values)
     if not values or any(not isinstance(value, str) or not value or
                          any(not part for part in value.split(".")) for value in values):
@@ -27,17 +29,14 @@ def _names(values, name):
 
 
 def frontiers(records, objectives, comparison_keys):
-    """Return nondominated records and explicit failures for each regime.
+    """Partition records by ``comparison_keys`` and compute nondominated Pareto sets.
 
-    Every objective is minimized. A record must have ``status='ok'`` or
-    ``'partial'``, finite selected objectives, and every comparison field.
-    ``partial`` can therefore compete on available losses without pretending an
-    undefined SPD score exists. Timeout/invalid/missing records remain in
-    ``excluded``. Exact ties are retained. Field paths can select nested values,
-    for example ``metrics.covariance_nmse`` and ``hardware.id``.
-
-    Comparison keys are required; this function does not invent a pooled
-    cross-scenario ranking or combine objectives into a scalar score.
+    All objectives are minimized. A record is eligible if ``status`` is ``"ok"``
+    or ``"partial"``, every path in ``comparison_keys`` resolves to a non-null
+    value, and every path in ``objectives`` resolves to a finite real number.
+    Ineligible records are returned in ``excluded`` with their original index
+    and reason code. Within each comparison group, exact ties are retained in
+    ``frontier``.
     """
     objectives = _names(objectives, "objectives")
     comparison_keys = _names(comparison_keys, "comparison_keys")

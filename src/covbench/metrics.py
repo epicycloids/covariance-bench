@@ -1,9 +1,8 @@
-"""Losses for complete increment moments, with explicit undefined scores.
+"""Loss evaluation and structural diagnostics for predicted increment moments.
 
-All losses are minimized. Matrix losses are exact floating-point evaluations
-by default; optional trace probes estimate a ratio and retain their raw values.
-Gaussian scores describe the declared marginal blocks, not an unobserved joint
-likelihood. Nothing here repairs a candidate's covariance.
+Evaluates ten statistical loss functions comparing a candidate ``Prediction``
+against ground truth ``Prediction(mean, covariance)``, together with positive-
+semidefiniteness diagnostics and explicit domain-failure records.
 """
 from __future__ import annotations
 
@@ -40,7 +39,7 @@ def _array(value, name, ndim):
 
 
 def _maxabs(value):
-    # Limit the temporary for a dense covariance to 128 rows.
+    """Return the maximum absolute entry of a 1D or 2D array in 128-row chunks."""
     if value.ndim == 1:
         return float(np.max(np.abs(value), initial=0.0))
     return max((float(np.max(np.abs(value[i:i + 128]), initial=0.0))
@@ -48,6 +47,7 @@ def _maxabs(value):
 
 
 def _validate(value):
+    """Validate a Prediction and return (validated_prediction, diagonal, max_entry_scale)."""
     if not isinstance(value, Prediction):
         raise ValueError("output must be Prediction")
     mean = _array(value.mean, "mean", 1)
@@ -79,7 +79,7 @@ def _validate(value):
         if not np.all(np.isfinite(diagonal)):
             raise ValueError("implied factor covariance must be finite")
         matrix = FactorMatrix(loadings, specific)
-        # For PSD factors the largest diagonal bounds every covariance entry.
+        # By Cauchy-Schwarz, |Sigma_{ij}| <= sqrt(Sigma_{ii} Sigma_{jj}) <= max_i Sigma_{ii}.
         scale = float(diagonal.max(initial=0.0))
     else:
         raise ValueError("covariance must be DenseMatrix or FactorMatrix")
@@ -87,7 +87,7 @@ def _validate(value):
 
 
 class _ScaledMatrix:
-    """Covariance/unit², optionally plus (mean/unit)(mean/unit)' ."""
+    """Unit-rescaled representation of Sigma / unit^2 or (Sigma + mean @ mean.T) / unit^2."""
     def __init__(self, matrix, unit, mean=None):
         self.n = matrix.n_assets
         self.unit = unit
@@ -133,6 +133,7 @@ class _ScaledMatrix:
 
 
 def _norm_sq(matrix):
+    """Compute the exact squared Frobenius norm ||matrix||_F^2."""
     if matrix.dense is None:
         gram = matrix.loadings.T @ matrix.loadings
         factor_diagonal = np.einsum("ij,ij->i", matrix.loadings, matrix.loadings)
@@ -145,21 +146,22 @@ def _norm_sq(matrix):
 
 
 def _distance_sq(left, right):
+    """Compute ||left - right||_F^2 and return (squared_distance, method, roundoff_clamped)."""
     if left.dense is None and right.dense is None:
         a, b = left.loadings, right.loadings
         if np.array_equal(a, b):
             difference = left.specific - right.specific
             return float(np.dot(difference, difference)), "factor_algebra", False
-        # QR keeps nearly equal low-rank matrices from subtracting two large
-        # Frobenius norms. The work is O(N(Kp+Kt)^2), not O(N^2).
+        # Write A A^T - B B^T = J S J^T with J = [A, B] and S = diag(I, -I).
+        # A thin QR factorization J = Q R gives ||A A^T - B B^T||_F^2 = ||R S R^T||_F^2
+        # in O(N (K_p + K_t)^2) time without subtracting two large Frobenius norms.
         difference_specific = left.specific - right.specific
         changed_diagonal = np.flatnonzero(difference_specific)
         joint = np.column_stack((a, b))
         signs = np.r_[np.ones(a.shape[1]), -np.ones(b.shape[1])]
-        # Incorporate a sparse diagonal change into the signed low-rank QR.
-        # This also covers identical specific variances: returning ||C||²
-        # directly avoids subtracting inconsistent last-bit diagonal residuals
-        # for equivalent rotated or split factor coordinates.
+        # When at most 32 specific variances differ (including zero differences),
+        # append the nonzero diagonal differences directly into J and S so that
+        # ||left - right||_F^2 = ||R S R^T||_F^2 without separate diagonal subtraction.
         sparse_diagonal = len(changed_diagonal) <= 32
         if sparse_diagonal and len(changed_diagonal):
             diagonal_factors = np.zeros((left.n, len(changed_diagonal)))
@@ -177,9 +179,8 @@ def _distance_sq(left, right):
         low_rank_diagonal = np.einsum("ij,ij->i", a, a) - np.einsum("ij,ij->i", b, b)
         diagonal_sq = float(np.dot(low_rank_diagonal, low_rank_diagonal))
         offdiagonal_sq = low_rank_sq - diagonal_sq
-        # The diagonal difference is calculated from the original factors,
-        # independently of QR. Its absolute roundoff depends on those factors,
-        # not solely on the possibly vanishing covariance residual.
+        # Bound floating-point roundoff between the QR norm ||R S R^T||_F^2 and
+        # the directly summed diagonal squared norm ||diag(A A^T - B B^T)||_2^2.
         diagonal_energy = float(np.sum((np.einsum("ij,ij->i", a, a)
                                         + np.einsum("ij,ij->i", b, b)) ** 2))
         tolerance = 256.0 * np.finfo(float).eps * max(low_rank_sq, diagonal_sq, diagonal_energy)
@@ -196,6 +197,7 @@ def _distance_sq(left, right):
 
 
 def _normalized(numerator, denominator, name, errors, true_zero=False):
+    """Divide ``numerator`` by ``denominator``, handling zero truth scale and overflow."""
     if denominator == 0.0:
         if true_zero and numerator == 0.0:
             return 0.0
@@ -210,6 +212,7 @@ def _normalized(numerator, denominator, name, errors, true_zero=False):
 
 
 def _trace_ratio(left, right, probes, rng, name, errors):
+    """Estimate ||left - right||_F^2 / ||right||_F^2 using ``probes`` Rademacher vectors."""
     vectors = rng.integers(0, 2, size=(left.n, probes)).astype(float) * 2.0 - 1.0
     target = right.matvec(vectors)
     difference = left.matvec(vectors) - target
@@ -231,6 +234,7 @@ def _trace_ratio(left, right, probes, rng, name, errors):
 
 
 def _pairs(n, count, rng):
+    """Return all upper-triangular index pairs (i < j) or a uniform random sample of size ``count``."""
     total = n * (n - 1) // 2
     if total <= count:
         return np.triu_indices(n, 1)
@@ -245,11 +249,13 @@ def _pairs(n, count, rng):
 
 
 def _blocks(n, size, count, rng):
+    """Partition up to ``size * count`` randomly permuted asset indices into sorted disjoint blocks."""
     indices = rng.permutation(n)[:min(n, size * count)]
     return [np.sort(indices[i:i + size]) for i in range(0, len(indices), size)]
 
 
 def _diagnose(value, diagonal, scale, blocks, exact_limit):
+    """Compute diagonal statistics and positive-semidefiniteness diagnostics for ``value``."""
     result = {
         "minimum_diagonal": float(diagonal.min()),
         "negative_diagonal_count": int(np.count_nonzero(diagonal < 0.0)),
@@ -281,6 +287,7 @@ def _diagnose(value, diagonal, scale, blocks, exact_limit):
 
 
 def _correlation_mse(prediction, truth, pred_diagonal, true_diagonal, rows, cols, errors):
+    """Compute mean squared correlation error over off-diagonal pairs ``(rows, cols)``."""
     if not len(rows):
         errors.append("correlation_mse: no off-diagonal pairs")
         return None
@@ -296,6 +303,7 @@ def _correlation_mse(prediction, truth, pred_diagonal, true_diagonal, rows, cols
 
 
 def _mean_scaled(prediction, truth, diagonal, errors):
+    """Compute mean squared drift error scaled coordinate-wise by true marginal variances."""
     difference = prediction.mean - truth.mean
     if np.any(diagonal < 0.0):
         errors.append("mean_variance_scaled_mse: truth has a negative marginal variance")
@@ -315,6 +323,7 @@ def _mean_scaled(prediction, truth, diagonal, errors):
 
 
 def _mean_mahalanobis(prediction, truth, blocks, exact_limit, errors):
+    """Compute per-asset Mahalanobis mean error via Woodbury identity or Cholesky solves."""
     n = len(truth.mean)
     unit = np.sqrt(_maxabs(truth.covariance.diagonal())) or 1.0
     difference = prediction.mean / unit - truth.mean / unit
@@ -342,6 +351,7 @@ def _mean_mahalanobis(prediction, truth, blocks, exact_limit, errors):
 
 
 def _relative_quadratics(predicted, true, name, errors):
+    """Compute mean squared relative error ``((predicted / true) - 1)^2`` over portfolio quadratics."""
     if np.any(true < 0.0):
         errors.append(f"{name}: truth has a negative portfolio quadratic form")
         return None
@@ -355,6 +365,7 @@ def _relative_quadratics(predicted, true, name, errors):
 
 
 def _gaussian_blocks(prediction, truth, covariance_unit, blocks, errors):
+    """Compute per-asset Gaussian KL and QLIKE divergences across declared principal blocks."""
     unit = covariance_unit
     predicted, true = _ScaledMatrix(prediction.covariance, unit), _ScaledMatrix(truth.covariance, unit)
     difference = prediction.mean / unit - truth.mean / unit
@@ -387,14 +398,31 @@ def _gaussian_blocks(prediction, truth, covariance_unit, blocks, errors):
 
 def score(prediction, truth, seed=0, *, exact_dense_limit=512, pair_samples=2048,
           portfolio_samples=64, block_size=32, block_count=8, trace_probes=0):
-    """Score moments against evaluator-private truth without repairing outputs.
+    """Evaluate statistical losses and structural diagnostics for a predicted moment pair.
 
-    ``trace_probes=0`` evaluates Frobenius losses exactly. A positive value
-    (at least two) explicitly selects trace estimates above ``exact_dense_limit``
-    for every representation. Correlation pairs, portfolios and Gaussian blocks
-    depend only on dimension, seed and these settings, never on the candidate.
-    KL is KL(truth || prediction), averaged per asset across declared blocks;
-    QLIKE is the corresponding mean-free covariance divergence.
+    Args:
+        prediction: Candidate ``Prediction(mean, covariance)``.
+        truth: Ground-truth ``Prediction(mean, covariance)``.
+        seed: Nonnegative integer seed used to sample correlation pairs, random
+            portfolios, principal blocks, and optional Rademacher trace probes.
+        exact_dense_limit: Maximum asset dimension N for full dense eigendecomposition
+            and full dense Mahalanobis Cholesky solves (default 512).
+        pair_samples: Maximum number of off-diagonal pairs evaluated in
+            ``correlation_mse`` (default 2048).
+        portfolio_samples: Number of unit-L2 portfolio vectors evaluated in
+            portfolio quadratic-form losses (default 64).
+        block_size: Maximum size of each disjoint principal sub-block for Gaussian
+            divergences and large-matrix diagnostics (default 32).
+        block_count: Maximum number of disjoint principal sub-blocks (default 8).
+        trace_probes: If 0 (default), Frobenius norms are computed exactly. If >= 2
+            and ``n_assets > exact_dense_limit``, ``covariance_nmse`` and
+            ``second_moment_nmse`` are estimated via ``trace_probes`` Rademacher
+            vectors.
+
+    Returns:
+        Dictionary with keys ``status`` (``"ok"``, ``"partial"``,
+        ``"invalid_prediction"``, or ``"invalid_truth"``), ``metrics``,
+        ``diagnostics``, ``metric_details``, and ``errors``.
     """
     seed = _integer(seed, "seed")
     exact_dense_limit = _integer(exact_dense_limit, "exact_dense_limit", 1)
@@ -489,8 +517,8 @@ def score(prediction, truth, seed=0, *, exact_dense_limit=512, pair_samples=2048
     details["gaussian_scores"] = {"scope": "declared_marginal_blocks", "normalization": "per asset over all declared blocks",
                                    "direction": "KL(truth || prediction)", "blocks": [block.tolist() for block in blocks],
                                    "failed_blocks": failed, "joint_gaussian_certificate": False}
-    # JSON must never carry NaN/Infinity, including probe diagnostics. A lost
-    # numerical score remains an explicit failure, never a filtered trial.
+    # Convert any non-finite floating-point value to None with an explicit error
+    # entry so serialized reports conform to strict JSON (allow_nan=False).
     def finite_json(value, path):
         if isinstance(value, dict):
             return {key: finite_json(item, f"{path}.{key}") for key, item in value.items()}

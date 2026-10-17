@@ -1,4 +1,10 @@
-"""Observation-only baselines; all window refitting is charged to predict."""
+"""Reference baseline estimators implementing API v1.
+
+``ZeroEstimator`` ignores all inputs and returns zero moments.
+``PreviousTickEstimator`` and ``AsyncNativeEstimator`` maintain a per-asset
+observation map in ``fit`` and ``update`` and perform window selection and
+moment estimation inside ``predict(query)``.
+"""
 from __future__ import annotations
 
 import numpy as np
@@ -7,6 +13,8 @@ from .api import DELETE, UPSERT, DenseMatrix, FactorMatrix, Prediction
 
 
 class ZeroEstimator:
+    """Constant baseline that predicts zero mean and zero covariance via an empty FactorMatrix."""
+
     def __init__(self, problem, config):
         self.n = problem.n_assets
 
@@ -24,6 +32,8 @@ class ZeroEstimator:
 
 
 class _PointEstimator:
+    """Base class maintaining a per-asset dictionary of active (time -> value) observations."""
+
     def __init__(self, problem, config):
         self.n = problem.n_assets
         self.config = dict(config)
@@ -53,6 +63,13 @@ class _PointEstimator:
                 raise ValueError("unknown point operation")
 
     def _window(self, query, *, anchor=False):
+        """Extract sorted per-asset (time, value) arrays on the estimation window [lo, hi].
+
+        Historical queries use ``[query.start, min(query.end, query.asof)]``;
+        forecast queries use ``[query.asof - lookback, query.asof]``. When
+        ``anchor=True``, the latest observation strictly before ``lo`` is prepended
+        to initialize carry-forward interpolation at ``lo``.
+        """
         duration = float(query.end - query.start)
         if not np.isfinite(duration) or duration <= 0:
             raise ValueError("query duration must be finite and positive")
@@ -78,7 +95,12 @@ class _PointEstimator:
 
 
 class PreviousTickEstimator(_PointEstimator):
-    """Previous-tick grid returns; missing return residuals contribute zero."""
+    """Sample mean and covariance rate estimator on an equally spaced previous-tick grid.
+
+    Observations are carried forward onto ``bins`` grid points over ``[lo, hi]``.
+    Grid intervals prior to an asset's first observation remain NaN and contribute
+    zero to that asset's centered return factor row.
+    """
 
     def __init__(self, problem, config):
         super().__init__(problem, config)
@@ -118,7 +140,13 @@ class PreviousTickEstimator(_PointEstimator):
 
 
 class AsyncNativeEstimator(_PointEstimator):
-    """Native overlap refit, estimated drift, assumed zero observation noise."""
+    """Window-refit adapter for ``async_covariance.fit(method='overlap')``.
+
+    Estimates per-asset drift rates from the first and last window observations,
+    fits overlap covariance rates assuming zero observation noise, and returns a
+    ``DenseMatrix`` for ``n_assets <= 256`` or a ring-graph ``FactorMatrix`` for
+    ``n_assets > 256``.
+    """
 
     def __init__(self, problem, config):
         super().__init__(problem, config)

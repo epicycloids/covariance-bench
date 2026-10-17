@@ -1,30 +1,16 @@
-# Native asynchronous covariance refit baseline
+# Asynchronous Overlap Refit Baseline (`async-native`)
 
-Requires the optional `async_covariance` library in the benchmark environment;
-this candidate does not install it. Maintains the current observation table,
-including replacements and deletions. Every prediction performs a native batch
-`fit(method="overlap", threads=1)` on points inside the historical query window
-or the forecast `lookback` ending at `asof`. No future observations are used.
-This is a **refit baseline**: online updates maintain the table, and the native
-scan and any factor fitting are charged to prediction. It does not benchmark the
-library's local incremental `OnlineCovariance` update algorithm.
+`async-native` (`async-native-refit` in `candidate.json`) is a window-refit adapter for the optional [`async-covariance`](https://github.com/epicycloids/async-covariance) package, implemented in [`src/covbench/baselines.py`](../../src/covbench/baselines.py) (`AsyncNativeEstimator`). The `async_covariance` package must be installed in the environment prior to evaluation.
 
-Drift is estimated independently per asset from its first and last retained
-points. Fewer than two points give zero drift. Observation noise variance is
-assumed zero, a deliberate statistical limitation rather than supplied truth.
-The library estimates covariance rates; output covariance is multiplied by the
-query duration, and output mean is estimated drift times duration.
+## Method
 
-For at most 256 assets, the baseline returns raw dense pair estimates, explicitly
-filling missing pairs with zero and flooring the diagonal at `floor`. It does not
-project an indefinite dense estimate. For larger universes, a deterministic ring
-graph with default degree eight selects pairs; `MomentSnapshot.factor` fits a
-model of rank at most eight with a positive marginal variance floor and the
-configured specific-variance fraction. Missing marginal variances use `floor`.
-Those graph, rank, completion, and flooring choices are baseline policies, not
-claims that the latent covariance has this structure. Factor fitting uses the
-fixed candidate seed, which is unrelated to generator seeds.
+The estimator maintains the active observation table under `UPSERT` replacement and `DELETE` removal. Each `predict(query)` call extracts observations in the historical window $`[t_{\mathrm{start}}, \min(t_{\mathrm{end}}, t_{\mathrm{asof}})]`$ or the forecast lookback window $`[t_{\mathrm{asof}} - \text{lookback}, t_{\mathrm{asof}}]`$ (default `lookback = 0.25`) and performs a batch `async_covariance.fit(..., method="overlap", noise_variance=0.0, threads=threads)`.
 
-Native fit or factor errors propagate as candidate failures. No blanket exception
-handler replaces a failed fit with a different estimator. Returned arrays are
-materialized host NumPy arrays; CPU synchronization is a no-op.
+- **Drift rate**: estimated per asset from the first and last observations in the window as $`(Y_{i,\mathrm{last}} - Y_{i,\mathrm{first}}) / (t_{i,\mathrm{last}} - t_{i,\mathrm{first}})`$, or zero if the asset has fewer than two window observations.
+- **Small and medium universes ($`N \le 256`$)**: evaluates all asset pairs, replaces missing pair estimates (`NaN`) with `0.0`, floors diagonal variance rates at `floor` (default `1e-8`), and returns `DenseMatrix(covariance * duration)` without eigenvalue projection.
+- **Large universes ($`N > 256`$)**: evaluates pairs on a deterministic circulant ring graph of even `degree` (default `8`), floors marginal variance rates at `floor`, fits a factor model via `MomentSnapshot.factor` of rank at most `rank` (default `8`) with `specific_floor` (`0.05`), `max_iter` (`100`), and `seed` (`0`), and scales loadings by $`\sqrt{\Delta\tau}`$ and specific variances by $`\Delta\tau = t_{\mathrm{end}} - t_{\mathrm{start}}`$ to return a `FactorMatrix`.
+
+## Execution Profile and Limitations
+
+- **Refit timing**: online `update` calls only maintain the point table; the native overlap scan and any factor fitting occur inside `predict` and are included in `predict_ns` and `completed_ns`. This baseline does not benchmark `async_covariance`'s incremental `OnlineCovariance` engine.
+- **Modeling policies**: observation noise variance is set to zero, and the ring graph, rank cap, and variance floor for $`N > 256`$ are fixed baseline policies. Any native fitting errors propagate directly as candidate failures. CPU `synchronize()` is a no-op.

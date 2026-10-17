@@ -1,16 +1,10 @@
-"""Seeded independent-increment truth and arrival-causal observation feeds.
+"""Synthetic scenario generator and exact moment integration on a discrete master grid.
 
-Latent increments live on a fixed master time grid. In each piecewise-constant
-regime their exact moments are ``drift*dt`` and ``(B B.T + diag(d))*dt``.
-Gaussian innovations use ordinary factor and specific shocks. Student-t shocks
-share an independent radial multiplier sqrt((df-2)/chi2(df)) at each grid step;
-df>8 gives finite eighth moments and preserves the stated covariance. Compound
-Poisson cases split covariance between Gaussian diffusion and zero-mean normal
-jumps, independently across time, with both common factor and specific jumps.
-
-Observation noise and deliberately incorrect early values are excluded from
-truth. Only Events/Observations and Query belong in candidate inputs; coefficient
-draws and truth are evaluator data. Query endpoints lie on the master grid.
+Generates latent level paths X(t) with piecewise-constant regime parameters
+(drift, factor loadings B, and specific variance rates d) under Gaussian,
+elliptical Student-t (df > 8), or compound Poisson jump-diffusion innovations,
+together with asynchronous noisy observations, arrival latencies, corrections,
+and deletions.
 """
 from __future__ import annotations
 
@@ -26,6 +20,7 @@ from .api import DELETE, UPSERT, Events, FactorMatrix, Observations, Prediction,
 
 @dataclass(frozen=True)
 class Scenario:
+    """Scenario specification pairing a unique string identifier with a config dictionary."""
     id: str
     config: dict
 
@@ -46,6 +41,7 @@ class Scenario:
 
 @dataclass(frozen=True)
 class Dataset:
+    """Generated synthetic instance containing arrival-ordered events, queries, and exact truth."""
     id: str
     n_assets: int
     events: Events
@@ -56,7 +52,7 @@ class Dataset:
     seed: int
 
     def observations_at(self, asof: float) -> Observations:
-        """Replay edits arriving by asof; never expose a later correction."""
+        """Materialize the active point table by replaying all events with ``arrival <= asof``."""
         if not np.isfinite(asof):
             raise ValueError("asof must be finite")
         stop = int(np.searchsorted(self.arrival, asof, side="right"))
@@ -112,8 +108,8 @@ def _integer(config, key, default, minimum):
 
 
 def _draw_regime(rng, n, rank, first, last, condition, drift_strength, horizon):
-    # condition controls diagonal spread, rather than claiming an exact spectral
-    # condition number. Specific variance remains strictly positive.
+    """Draw drift rates, factor loadings B, and positive specific variance rates d for one regime."""
+    # Draw log-uniform marginal variance rates v_i in [condition^(-1/2), condition^(1/2)].
     variance = np.exp(rng.uniform(-np.log(condition) / 2, np.log(condition) / 2, n))
     specific_share = rng.uniform(.2, .8, n)
     if rank:
@@ -129,6 +125,7 @@ def _draw_regime(rng, n, rank, first, last, condition, drift_strength, horizon):
 
 
 def _latent(rng, regimes, n, steps, horizon, distribution, df, jump_fraction, jump_rate):
+    """Simulate the latent level path X(t_s) on the master time grid for s = 0, ..., steps."""
     dt = horizon / steps
     increments = np.empty((steps, n))
     for regime in regimes:
@@ -154,6 +151,7 @@ def _latent(rng, regimes, n, steps, horizon, distribution, df, jump_fraction, ju
 
 
 def _sample_indices(rng, n, steps, sampling, fraction, imbalance):
+    """Sample sorted grid step indices in {0, ..., steps} for each asset."""
     if sampling == "synchronous":
         interior = np.flatnonzero(rng.random(steps - 1) < fraction) + 1
         common = np.r_[0, interior, steps]
@@ -175,6 +173,7 @@ def _sample_indices(rng, n, steps, sampling, fraction, imbalance):
 
 
 def _integrated(regimes, grid, query, n):
+    """Integrate exact latent increment moments over [query.start, query.end] in factor form."""
     mean = np.zeros(n)
     specific = np.zeros(n)
     blocks = []
@@ -190,6 +189,7 @@ def _integrated(regimes, grid, query, n):
 
 
 def generate(scenario: Scenario, seed: int) -> Dataset:
+    """Generate a synthetic Dataset for ``scenario`` from a 64-bit integer ``seed``."""
     config = scenario.config
     n = _integer(config, "n_assets", None, 1)
     steps = _integer(config, "grid_steps", 256, 16)
@@ -299,6 +299,7 @@ def generate(scenario: Scenario, seed: int) -> Dataset:
 
 
 def load_suite(path) -> list[Scenario]:
+    """Load and validate a list of Scenario objects from a suite JSON file."""
     data = json.loads(Path(path).read_text())
     if isinstance(data, dict):
         if data.get("version", 1) != 1:

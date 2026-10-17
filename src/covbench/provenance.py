@@ -1,4 +1,4 @@
-"""Observed identities, rather than user-supplied run labels, identify a result."""
+"""Cryptographic digests, environment inspection, and deterministic seed derivation."""
 from __future__ import annotations
 
 import hashlib
@@ -13,10 +13,12 @@ EXCLUDED = {".git", ".venv", "venv", "__pycache__", ".pytest_cache", "target"}
 
 
 def digest(value):
+    """Return the hex SHA-256 digest of a canonical JSON-serialized value."""
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
 
 
 def file_hash(path):
+    """Return the hex SHA-256 digest of a file's raw bytes."""
     h = hashlib.sha256()
     with Path(path).open("rb") as f:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
@@ -25,6 +27,7 @@ def file_hash(path):
 
 
 def tree_hash(path):
+    """Return a deterministic SHA-256 digest over all non-excluded files in ``path``."""
     root = Path(path)
     entries = [(str(p.relative_to(root)), file_hash(p)) for p in sorted(root.rglob("*"))
                if p.is_file() and not EXCLUDED.intersection(p.relative_to(root).parts)]
@@ -32,6 +35,7 @@ def tree_hash(path):
 
 
 def environment(threads):
+    """Collect Python, OS, CPU, GPU, installed package, and thread-limit metadata."""
     cpu = platform.processor()
     info = Path("/proc/cpuinfo")
     if info.exists():
@@ -55,4 +59,5 @@ def environment(threads):
 
 
 def derived_seed(root_seed, scenario_id, replication):
+    """Derive a deterministic 64-bit integer seed from ``(root_seed, scenario_id, replication)``."""
     return int(digest([root_seed, scenario_id, replication])[:16], 16)

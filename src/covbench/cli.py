@@ -1,3 +1,4 @@
+"""Command-line interface for running benchmarks, computing Pareto frontiers, and regrading."""
 from __future__ import annotations
 
 import argparse
@@ -7,6 +8,7 @@ import secrets
 
 
 def main(argv=None):
+    """Parse CLI arguments and dispatch ``run``, ``frontier``, or ``regrade``."""
     parser = argparse.ArgumentParser(prog="covbench")
     commands = parser.add_subparsers(dest="command", required=True)
     run = commands.add_parser("run", help="evaluate one frozen candidate on paired synthetic draws")

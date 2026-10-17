@@ -50,7 +50,7 @@ def test_exact_dense_factor_parity_and_independent_formulas(prediction_factor, t
     covariance_kl = np.trace(np.linalg.solve(p, t)) + np.linalg.slogdet(p)[1] - np.linalg.slogdet(t)[1] - len(t)
     np.testing.assert_allclose(metrics["covariance_qlike"], covariance_kl / len(t), rtol=1e-11, atol=1e-15)
     np.testing.assert_allclose(metrics["gaussian_kl"], .5*(covariance_kl + difference @ np.linalg.solve(p, difference)) / len(t), rtol=1e-11)
-    # Same evaluator-only portfolios, independently reconstructed.
+    # Independently reconstruct the seeded unit-L2 evaluation portfolios.
     rng = np.random.default_rng(np.random.SeedSequence(8).spawn(4)[2])
     weights = rng.normal(size=(len(t), 64)); weights[:, 0] = 1.
     weights /= np.linalg.norm(weights, axis=0)
@@ -175,8 +175,8 @@ def test_large_factor_scores_do_not_materialize_dense_rows(monkeypatch):
 
 @pytest.mark.parametrize("transform", ["rotate", "split"])
 def test_equivalent_factor_coordinates_have_finite_near_zero_loss(transform):
-    # Seed23 triggered a false numerical-consistency failure in the original
-    # QR-minus-diagonal formula for rotated coordinates.
+    # Verify that orthogonal factor rotations and column splits with identical
+    # specific variances evaluate to near-zero Frobenius loss without cancellation.
     rng = np.random.default_rng(23)
     factors = rng.normal(size=(9, 3))
     rotation = np.linalg.qr(rng.normal(size=(3, 3)))[0]
