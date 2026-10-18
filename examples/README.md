@@ -20,7 +20,7 @@ Timed execution used source commit `f6bc432`. The saved predictions were subsequ
 These example JSON files retain run metadata and per-regime summaries (`records`), omitting the per-trial `.npz` prediction files and worker logs. To run a full evaluation from the repository root:
 
 ```sh
-covbench run --candidate candidates/previous-tick --suite suites/core.json \
+uv run covbench run --candidate candidates/previous-tick --suite suites/core.json \
   --root-seed 20261013 --replications 3 --timing-repeats 2 --output runs/tick-core
 ```
 

@@ -17,13 +17,13 @@ Historical-window estimation and next-window forecasting are evaluated as separa
 Requires Python 3.10+ on Linux:
 
 ```sh
-python -m pip install '.[test]'
+uv sync --extra test
 
-covbench run --candidate candidates/previous-tick --suite suites/smoke.json \
+uv run covbench run --candidate candidates/previous-tick --suite suites/smoke.json \
   --root-seed 20261013 --replications 3 --timing-repeats 3 --output runs/tick
-covbench run --candidate candidates/zero --suite suites/smoke.json \
+uv run covbench run --candidate candidates/zero --suite suites/smoke.json \
   --root-seed 20261013 --replications 3 --timing-repeats 3 --output runs/zero
-covbench frontier runs/tick/results.json runs/zero/results.json \
+uv run covbench frontier runs/tick/results.json runs/zero/results.json \
   --objectives completed_ns covariance_nmse --output runs/frontier.json
 ```
 
@@ -34,7 +34,7 @@ Each run writes `<output>/results.json` with per-query outcomes and per-regime s
 To recompute statistical losses from saved predictions without re-executing candidate code:
 
 ```sh
-covbench regrade runs/tick/results.json --output runs/tick/regraded.json
+uv run covbench regrade runs/tick/results.json --output runs/tick/regraded.json
 ```
 
 `regrade` verifies the SHA-256 digests of the saved prediction arrays and regenerated scenario inputs, preserving the original measurement identity alongside the updated scoring identity. Precomputed core-suite reports for the three included baselines are provided in [`examples/`](examples/README.md).
@@ -42,7 +42,7 @@ covbench regrade runs/tick/results.json --output runs/tick/regraded.json
 Run the test suite with:
 
 ```sh
-python -m pytest -q
+uv run python -m pytest -q
 ```
 
 ## Candidate Interface

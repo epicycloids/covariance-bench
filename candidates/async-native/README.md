@@ -1,6 +1,13 @@
 # Asynchronous Overlap Refit Baseline (`async-native`)
 
-`async-native` (`async-native-refit` in `candidate.json`) is a window-refit adapter for the optional [`async-covariance`](https://github.com/epicycloids/async-covariance) package, implemented in [`src/covbench/baselines.py`](../../src/covbench/baselines.py) (`AsyncNativeEstimator`). The `async_covariance` package must be installed in the environment prior to evaluation.
+`async-native` (`async-native-refit` in `candidate.json`) is a window-refit adapter for the optional [`async-covariance`](https://github.com/epicycloids/async-covariance) package, implemented in [`src/covbench/baselines.py`](../../src/covbench/baselines.py) (`AsyncNativeEstimator`). Because worker subprocesses import from the project environment `.venv` and `uv sync` removes undeclared packages, install `async-covariance` into `.venv` after syncing. From the `covariance-bench` repository root (assuming a sibling `../async-covariance` checkout):
+
+```sh
+uv sync --extra test
+uv pip install --python .venv/bin/python ../async-covariance
+uv run covbench run --candidate candidates/async-native --suite suites/smoke.json \
+  --root-seed 20261013 --replications 3 --timing-repeats 3 --output runs/native
+```
 
 ## Method
 

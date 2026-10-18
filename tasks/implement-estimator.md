@@ -120,19 +120,19 @@ Because the local subprocess runner does not enforce a filesystem or network san
 
 1. **Smoke verification**: verify offline and online execution, point replacement and deletion, forecast queries, and output validity on `suites/smoke.json`:
    ```sh
-   covbench run --candidate candidates/my-estimator --suite suites/smoke.json \
+   uv run covbench run --candidate candidates/my-estimator --suite suites/smoke.json \
      --root-seed 20261013 --replications 2 --timing-repeats 1 --output runs/smoke-check
    ```
 2. **Matched development comparison**: because `comparison_key` hashes the evaluator tree, hardware/software environment, execution policy, suite, and `root_seed`, run the candidate and the reference baselines on the same machine with matching flags before computing Pareto frontiers:
    ```sh
-   covbench run --candidate candidates/my-estimator --suite suites/core.json \
+   uv run covbench run --candidate candidates/my-estimator --suite suites/core.json \
      --root-seed 20261013 --replications 3 --timing-repeats 2 --output runs/my-core
-   covbench run --candidate candidates/previous-tick --suite suites/core.json \
+   uv run covbench run --candidate candidates/previous-tick --suite suites/core.json \
      --root-seed 20261013 --replications 3 --timing-repeats 2 --output runs/tick-core
-   covbench run --candidate candidates/zero --suite suites/core.json \
+   uv run covbench run --candidate candidates/zero --suite suites/core.json \
      --root-seed 20261013 --replications 3 --timing-repeats 2 --output runs/zero-core
 
-   covbench frontier runs/my-core/results.json runs/tick-core/results.json runs/zero-core/results.json \
+   uv run covbench frontier runs/my-core/results.json runs/tick-core/results.json runs/zero-core/results.json \
      --objectives completed_ns covariance_nmse --output runs/frontier-core.json
    ```
    Inspect stage timings (`load`, `create`, `fit`, `update`, `predict`, `completed_ns`), statistical losses, Monte Carlo standard errors, PSD diagnostics, and any failures or `null` metrics across regimes. Report both the regimes that improve and those that regress.
