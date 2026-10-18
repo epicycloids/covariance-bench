@@ -1,6 +1,6 @@
 # Zero Baseline (`zero`)
 
-`zero` is a constant sanity-check baseline implemented in [`src/covbench/baselines.py`](../../src/covbench/baselines.py) (`ZeroEstimator`).
+`zero` is a constant baseline implemented in [`src/covbench/baselines.py`](../../src/covbench/baselines.py) (`ZeroEstimator`).
 
 For any asset count $`N`$ and query interval $`[t_{\mathrm{start}}, t_{\mathrm{end}}]`$, `ZeroEstimator` ignores all observations and point edits (`fit` and `update` are no-ops) and returns zero mean, zero covariance, and zero second moment using an empty factor matrix:
 

@@ -10,7 +10,7 @@ For an $`N`$-asset universe with latent level process $`X(t) \in \mathbb{R}^N`$,
 
 Input observations are real-valued level proxies already in estimation units (such as log-prices). Candidates implement a fixed Python interface ([`src/covbench/api.py`](src/covbench/api.py)); their internals may use any language, compiler, or hardware accelerator.
 
-Historical-window estimation and next-window forecasting are evaluated as separate tracks, each supporting offline and online execution. Reports retain stage timings, peak memory, ten statistical loss functions, structural diagnostics, and failure records, and compare candidates via per-regime Pareto frontiers rather than a single global score.
+Historical-window estimation and next-window forecasting are evaluated as separate tracks, each supporting offline and online execution. Reports retain stage timings, peak memory, ten statistical loss functions, structural diagnostics, and failure records, and compare candidates via per-regime Pareto frontiers.
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ uv run covbench frontier runs/tick/results.json runs/zero/results.json \
 
 Use a fresh `--output` directory for each run. Matching `--root-seed` values produce identical synthetic realizations across candidates; omit `--root-seed` to draw a random 64-bit evaluator seed. `--batch-size 1` measures single-event online delivery (default `128`). `--threads` sets worker CPU affinity and numerical library thread limits (default `1`). Default resource limits are a 60-second per-command timeout (`--timeout`) and a 1,024 MiB worker peak RSS ceiling (`--memory-mib`).
 
-Each run writes `<output>/results.json` with per-query outcomes and per-regime summaries, along with worker logs and saved prediction files under `<output>/trials/`. Timing summaries report sample medians across trials; loss summaries average timing repeats within each synthetic replication before computing the mean and Monte Carlo standard error across independent draws. Failed or incomplete trials remain visible in the report and prevent a complete-case summary score for that regime.
+Each run writes `<output>/results.json` with per-query outcomes and per-regime summaries, along with worker logs and saved prediction files under `<output>/trials/`. Timing summaries report sample medians across trials; loss summaries average timing repeats within each synthetic replication before computing the mean and Monte Carlo standard error across independent draws. Failed or incomplete trials are recorded in the report and leave the affected summary metrics `null`.
 
 To recompute statistical losses from saved predictions without re-executing candidate code:
 

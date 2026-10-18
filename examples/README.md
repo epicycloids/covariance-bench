@@ -13,7 +13,7 @@ The three baselines were evaluated across all 12 core scenarios, $`R_{\mathrm{re
 
 Metrics whose domain conditions fail remain `null` (`status = "partial"`): for `zero`, zero marginal variances leave `correlation_mse`, `gaussian_kl`, and `covariance_qlike` `null` across all 144 regime summaries; for `async-native`, positive floored diagonals keep `correlation_mse` finite everywhere, and `gaussian_kl` and `covariance_qlike` are finite on 48 summaries (the 12 `gaussian-clean-16` summaries and the 36 factor-mode summaries at $`N = 1024`$) and `null` on the remaining 96 summaries ($`N \le 256`$ scenarios where unprojected dense overlap estimates are indefinite).
 
-Timed execution used source commit `f6bc432`. The saved predictions were subsequently regraded (`covbench regrade`) after adding a diagonal-only truth fast path in `_mean_mahalanobis` for rank-0 scenarios (`student-noise-edits-16`), preserving all measured timings and Frobenius losses while recording separate measurement and scoring evaluator hashes.
+Trial execution and timings were measured at source commit `f6bc432` (`measurement_evaluator_sha256`), and the saved predictions were regraded with `covbench regrade` (`scoring_evaluator_sha256`), which evaluates `_mean_mahalanobis` via the diagonal-only truth specialization on rank-0 scenarios (`student-noise-edits-16`) while leaving all measured timings and Frobenius losses unchanged.
 
 ## Reproducing a Full Run
 

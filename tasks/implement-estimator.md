@@ -33,17 +33,17 @@ The implied uncentered second-moment matrix is
 M = \Sigma + \mu \mu^\top.
 ```
 
-- **Historical queries** (`track = "historical"`, $`t_{\mathrm{start}} < t_{\mathrm{end}} = t_{\mathrm{asof}}`$) estimate the marginal moments of the latent increment over the observed physical-time window (rather than the posterior moments of the realized path conditional on observations).
-- **Forecast queries** (`track = "forecast"`, $`t_{\mathrm{asof}} = t_{\mathrm{start}} < t_{\mathrm{end}}`$) predict the marginal moments of the latent increment over the subsequent interval using only information that has arrived by $`t_{\mathrm{asof}}`$.
+- **Historical queries** (`track = "historical"`, $`t_{\mathrm{start}} < t_{\mathrm{end}} = t_{\mathrm{asof}}`$) estimate the moments of the latent increment over the observed physical-time window under the active regime parameters.
+- **Forecast queries** (`track = "forecast"`, $`t_{\mathrm{asof}} = t_{\mathrm{start}} < t_{\mathrm{end}}`$) predict the moments of the latent increment over the subsequent interval using only information that has arrived by $`t_{\mathrm{asof}}`$.
 
-In both tracks, the target excludes observation noise $`\varepsilon_{i,k}`$ and includes the increment mean $`\mu`$ in the second moment $`M = \Sigma + \mu\mu^\top`$.
+In both tracks, the target moments exclude observation noise $`\varepsilon_{i,k}`$ and include the increment mean $`\mu`$ in the second moment $`M = \Sigma + \mu\mu^\top`$.
 
 ## 2. Required API Behavior
 
 The entrypoint factory `create(problem: Problem, config: dict) -> Estimator` receives `Problem(n_assets, mode, time_unit)` and `config`, and returns an object implementing four methods:
 
 - `fit(observations: Observations) -> None`: fits from the materialized point table at the current checkpoint in `"offline"` mode. The 1D read-only arrays `observations.time`, `observations.asset`, and `observations.value` contain physical measurement timestamps $`t_k \le t_{\mathrm{asof}}`$, asset indices $`i_k \in \{0, \dots, N-1\}`$, and observed level proxies $`y_k`$. Calling `fit` replaces any prior observation state.
-- `update(events: Events) -> None`: processes arrival-ordered point edits in `"online"` mode. `UPSERT` (`0`) inserts or replaces a point keyed by `(asset, time)`; `DELETE` (`1`) removes that key and ignores `value`. Handle retroactive corrections and deletions of older measurement timestamps, not only append operations.
+- `update(events: Events) -> None`: processes arrival-ordered point edits in `"online"` mode. `UPSERT` (`0`) inserts or replaces a point keyed by `(asset, time)`; `DELETE` (`1`) removes that key and ignores `value`. Because events arrive with variable latency and include retroactive revisions, measurement timestamps `events.time` are not monotonic and edits may target previously observed keys.
 - `predict(query: Query) -> Prediction`: returns `Prediction(mean, covariance)` for the full latent increment $`X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$, interpreting `query.start`, `query.end`, and `query.asof` in physical time.
 - `synchronize() -> None`: completes any outstanding asynchronous accelerator work (or is a no-op for CPU code).
 
@@ -56,7 +56,7 @@ The entrypoint factory `create(problem: Problem, config: dict) -> Estimator` rec
   - `DenseMatrix(value)` with symmetric 2D array `value` of shape `(n_assets, n_assets)`, or
   - `FactorMatrix(loadings, specific)` representing $`B B^\top + \mathrm{diag}(d)`$, with 2D array `loadings` $`B`$ of shape `(n_assets, rank)` ($`K \ge 0`$), nonnegative 1D array `specific` $`d`$ of shape `(n_assets,)`, and finite implied diagonal $`\mathrm{diag}(B B^\top) + d`$.
 
-Return the `DenseMatrix` or `FactorMatrix` API classes directly with materialized host arrays rather than lazy objects that defer computation. During the timed `predict` call, the worker synchronizes devices and copies the output arrays into contiguous `float64` host memory.
+Construct `DenseMatrix` or `FactorMatrix` directly with materialized host NumPy arrays. During the timed `predict` call, the worker synchronizes accelerator devices, validates the returned arrays, and copies them into contiguous `float64` host memory.
 
 ### Minimal Skeleton
 
@@ -112,9 +112,9 @@ Because the local subprocess runner does not enforce a filesystem or network san
 ## 4. Statistical and Algorithmic Considerations
 
 1. **Interval vs. rate scaling**: if an estimator computes per-unit-time drift rate $`\hat{\mu}_{\mathrm{rate}}`$ and covariance rate $`\hat{\Sigma}_{\mathrm{rate}}`$, scale them by the query duration $`\Delta\tau = t_{\mathrm{end}} - t_{\mathrm{start}}`$ to obtain interval moments $`\hat{\mu} = \hat{\mu}_{\mathrm{rate}} \Delta\tau`$ and $`\hat{\Sigma} = \hat{\Sigma}_{\mathrm{rate}} \Delta\tau`$ (for a `FactorMatrix`, scale `loadings` by $`\sqrt{\Delta\tau}`$ and `specific` by $`\Delta\tau`$).
-2. **Metric domains and regularization**: indefinite `DenseMatrix` outputs are retained and diagnosed by the evaluator without projection; algebraic losses remain defined (and `correlation_mse` remains defined whenever marginal variances are strictly positive), while `gaussian_kl` and `covariance_qlike` require that neither matrix is diagnosed as full-matrix `"indefinite"` (for dense matrices with $`N \le N_{\mathrm{exact}}`$, within eigenvalue tolerance) and that Cholesky factorization succeeds on every declared principal block. If a method requires eigenvalue flooring or shrinkage, implement and account for it inside the candidate.
-3. **Output representation and scaling**: both `DenseMatrix` and `FactorMatrix` are valid across all suites (`smoke`, `core`, `scale`, and `holdout`). Returning a `FactorMatrix` of rank $`K_p`$ stores the output in $`O(N(K_p + 1))`$ floats and allows the evaluator's QR/Woodbury scorer to evaluate exact Frobenius losses in $`O(N(K_p + mK + 1)^2)`$ time, whereas a `DenseMatrix` candidate is scored by streaming 128-row blocks in $`O(N)`$ workspace and $`O(N^2(mK + 1))`$ time against rank-$`mK`$ factor truth. The candidate's own runtime is determined by its internal estimation algorithm and must fit within the runner's timeout and RSS limits.
-4. **Checkpoint work accounting**: `completed_ns` sums all work at a checkpoint (`create` + `fit` + two `predict` calls in offline mode; incremental `update` batches + two `predict` calls in online mode, plus `create` at the first checkpoint). Every timing repetition starts a fresh worker process with no excluded warmup phase, so any JIT compilation triggered during a stage is charged to that stage.
+2. **Metric domains and regularization**: the evaluator scores predictions as returned without projecting indefinite matrices onto the positive semidefinite cone. Indefinite `DenseMatrix` predictions are evaluated on the algebraic losses (and on `correlation_mse` whenever all marginal variances are strictly positive), while `gaussian_kl` and `covariance_qlike` require that neither matrix is diagnosed as full-matrix `"indefinite"` (for dense matrices with $`N \le N_{\mathrm{exact}}`$, within eigenvalue tolerance) and that Cholesky factorization succeeds on every declared principal block. Any eigenvalue flooring or shrinkage must be performed by the candidate.
+3. **Output representation and scaling**: both `DenseMatrix` and `FactorMatrix` are accepted in all suites (`smoke`, `core`, `scale`, and `holdout`), subject to the worker timeout and peak RSS limits. A `FactorMatrix` of rank $`K_p`$ uses $`O(N(K_p + 1))`$ output storage and $`O(N(K_p + mK + 1)^2)`$ time for exact Frobenius scoring against rank-$`mK`$ factor truth; a `DenseMatrix` is scored in 128-row blocks using $`O(N)`$ workspace and $`O(N^2(mK + 1))`$ time.
+4. **Checkpoint work accounting**: `completed_ns` sums all work at a checkpoint (`create` + `fit` + two `predict` calls in offline mode; incremental `update` batches + two `predict` calls in online mode, plus `create` at the first checkpoint). Every timing repetition starts a fresh worker process, and any JIT compilation triggered during a stage is included in that stage's measured time.
 
 ## 5. Evaluation and Validation Workflow
 

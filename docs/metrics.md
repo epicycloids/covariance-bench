@@ -51,7 +51,7 @@ When the true matrix norm in the denominator is zero, `_normalized` returns $`0.
 
 ### 2.2 Mean Estimation Losses
 
-**`mean_variance_scaled_mse`** weights each coordinate's squared mean error $`(\hat{\mu}_i - \mu_i)^2`$ by the inverse true marginal variance $`1 / \Sigma_{ii}`$, making the loss invariant to coordinate-wise rescaling and well-defined even when the true drift $`\mu`$ is zero.
+**`mean_variance_scaled_mse`** weights each coordinate's squared mean error $`(\hat{\mu}_i - \mu_i)^2`$ by the inverse true marginal variance $`1 / \Sigma_{ii}`$, making the loss invariant to coordinate-wise rescaling and well-defined when the true drift $`\mu`$ is zero.
 
 **`mean_mahalanobis`** weights the mean error vector $`\delta_\mu = \hat{\mu} - \mu`$ by the true precision matrix $`\Sigma^{-1}`$. When `truth.covariance` is a `FactorMatrix` with strictly positive specific variances $`d > 0`$ (which holds for all benchmark-generated truth), `_mean_mahalanobis` evaluates the exact full-dimension quadratic form $`\frac{1}{N} \delta_\mu^\top \Sigma^{-1} \delta_\mu`$ using the Woodbury identity (Section 3.3). When `truth.covariance` is a `DenseMatrix` (or has zero specific variances), it evaluates the full Cholesky solve if $`N \le N_{\mathrm{exact}}`$ (`exact_dense_limit`, default $`512`$), and otherwise averages the quadratic form over the declared sub-blocks $`\mathcal{B}_1, \dots, \mathcal{B}_m`$:
 
@@ -65,7 +65,7 @@ The evaluation scope (`"full"` or `"declared_block_average"`) is recorded in `me
 
 Let $`\mathcal{P} = \{(i_1, j_1), \dots, (i_P, j_P)\}`$ ($`0 \le i_p < j_p < N`$) be the evaluated set of off-diagonal asset pairs. If $`\binom{N}{2} \le P_{\max}`$ (`pair_samples`, default $`2048`$), $`\mathcal{P}`$ contains all $`\binom{N}{2}`$ upper-triangular pairs; otherwise $`\mathcal{P}`$ is a seeded uniform sample of $`P_{\max}`$ distinct pairs drawn without replacement (`_pairs`).
 
-`correlation_mse` requires only $`N \ge 2`$ and strictly positive marginal variances ($`\hat{\Sigma}_{ii} > 0`$ and $`\Sigma_{ii} > 0`$ for all $`i \in \{0, \dots, N-1\}`$). In particular, an indefinite dense matrix whose diagonal entries are all strictly positive still has a well-defined `correlation_mse`. The predicted and true pairwise correlations
+`correlation_mse` is defined whenever $`N \ge 2`$ and all predicted and true marginal variances are strictly positive ($`\hat{\Sigma}_{ii} > 0`$ and $`\Sigma_{ii} > 0`$ for all $`i \in \{0, \dots, N-1\}`$), including for indefinite dense matrices with positive diagonals. The predicted and true pairwise correlations
 
 ```math
 \hat{C}_{ij} = \frac{\hat{\Sigma}_{ij}}{\sqrt{\hat{\Sigma}_{ii}} \sqrt{\hat{\Sigma}_{jj}}}, \qquad C_{ij} = \frac{\Sigma_{ij}}{\sqrt{\Sigma_{ii}} \sqrt{\Sigma_{jj}}}
@@ -104,7 +104,7 @@ Both metrics are normalized per asset across the union of the evaluated blocks (
 \mathrm{covariance\_qlike} = \frac{1}{K_{\mathrm{total}}} \sum_{b=1}^m \ell_{\mathrm{QLIKE}}(\hat{\Sigma}_b, \Sigma_b), \qquad \mathrm{gaussian\_kl} = \frac{1}{K_{\mathrm{total}}} \sum_{b=1}^m D_{\mathrm{KL}}\!\left(\mathcal{N}(\mu_b, \Sigma_b) \parallel \mathcal{N}(\hat{\mu}_b, \hat{\Sigma}_b)\right).
 ```
 
-**Domain and all-or-nothing block policy.** Before evaluating the blocks, `score` checks whether full-matrix eigenvalue diagnosis (`_diagnose`, performed on `DenseMatrix` inputs with $`N \le N_{\mathrm{exact}}`$) classified either $`\hat{\Sigma}`$ or $`\Sigma`$ as `"indefinite"` (minimum eigenvalue below $`-\tau`$). If neither is classified as full-matrix `"indefinite"`, `_gaussian_blocks` runs Cholesky factorization (`cho_factor`) only on the declared principal blocks $`\mathcal{B}_1, \dots, \mathcal{B}_m`$ (so a globally singular positive semidefinite matrix can pass when every declared proper block is strictly positive definite). If full-matrix diagnosis is `"indefinite"` or Cholesky factorization fails on any declared block $`\mathcal{B}_b`$, both `gaussian_kl` and `covariance_qlike` are set to `None` and the failed block indices are recorded in `metric_details["gaussian_scores"]["failed_blocks"]`. Surviving blocks are not averaged on their own.
+**Domain requirements.** `gaussian_kl` and `covariance_qlike` are evaluated when full-matrix diagnosis (`_diagnose`, run on `DenseMatrix` inputs with $`N \le N_{\mathrm{exact}}`$) does not classify either $`\hat{\Sigma}`$ or $`\Sigma`$ as `"indefinite"` (minimum eigenvalue below $`-\tau`$) and Cholesky factorization (`cho_factor`) succeeds on every declared principal block $`\mathcal{B}_1, \dots, \mathcal{B}_m`$. A globally rank-deficient positive semidefinite matrix is therefore eligible when all declared proper blocks are strictly positive definite. If full-matrix diagnosis is `"indefinite"` or Cholesky factorization fails on any declared block $`\mathcal{B}_b`$, both metrics are set to `None` and the failed block indices are recorded in `metric_details["gaussian_scores"]["failed_blocks"]`.
 
 **Quasi-likelihood interpretation.** Under `student_t` or `compound_poisson` scenarios, `gaussian_kl` and `covariance_qlike` evaluate the Gaussian divergence between moment-matched normal surrogates $`\mathcal{N}(\mu_b, \Sigma_b)`$ and $`\mathcal{N}(\hat{\mu}_b, \hat{\Sigma}_b)`$ on the marginal blocks $`\mathcal{B}_b`$.
 
@@ -128,7 +128,7 @@ reducing second-moment factor calculations to the same low-rank algebra as covar
 
 ### 3.2 Exact $`O(N(K_p + K_t + 1)^2)`$ Factor Frobenius Algebra
 
-When both `left` and `right` are in factor form, $`\hat{\Sigma} = A A^\top + \mathrm{diag}(d_A)`$ ($`A \in \mathbb{R}^{N \times K_p}`$) and $`\Sigma = B B^\top + \mathrm{diag}(d_B)`$ ($`B \in \mathbb{R}^{N \times K_t}`$), materializing $`N \times N`$ matrices would require $`O(N^2)`$ memory and work. Instead, `_norm_sq` and `_distance_sq` evaluate the exact squared Frobenius norms in $`O(N(K_p + K_t + 1)^2)`$ time (which includes the $`O(N)`$ vector work on `specific` and `mean` when $`K_p = K_t = 0`$).
+When both `left` and `right` are in factor form, $`\hat{\Sigma} = A A^\top + \mathrm{diag}(d_A)`$ ($`A \in \mathbb{R}^{N \times K_p}`$) and $`\Sigma = B B^\top + \mathrm{diag}(d_B)`$ ($`B \in \mathbb{R}^{N \times K_t}`$), `_norm_sq` and `_distance_sq` evaluate the exact squared Frobenius norms in $`O(N(K_p + K_t + 1)^2)`$ time (including the $`O(N)`$ vector work on `specific` and `mean` when $`K_p = K_t = 0`$), avoiding $`O(N^2)`$ materialization of $`N \times N`$ matrices.
 
 **Single factor matrix norm (`_norm_sq`).** For $`\Sigma = B B^\top + \mathrm{diag}(d_B)`$, expanding the trace gives
 
@@ -138,9 +138,7 @@ When both `left` and `right` are in factor form, $`\hat{\Sigma} = A A^\top + \ma
 
 where $`B^\top B \in \mathbb{R}^{K_t \times K_t}`$ and $`\mathrm{diag}(B B^\top)_i = \|B_{i\cdot}\|_2^2`$.
 
-**Signed low-rank QR distance (`_distance_sq`).** To compute $`\|\Delta\|_F^2`$ for $`\Delta = (A A^\top - B B^\top) + \mathrm{diag}(d_A - d_B)`$, note that expanding $`\|A^\top A\|_F^2 + \|B^\top B\|_F^2 - 2\|A^\top B\|_F^2`$ in floating-point arithmetic suffers catastrophic cancellation whenever $`A A^\top \approx B B^\top`$.
-
-Instead, let $`\delta_d = d_A - d_B`$ and write the low-rank difference as $`\Delta_{\mathrm{low}} = A A^\top - B B^\top = J S J^\top`$, where
+**Signed low-rank QR distance (`_distance_sq`).** To compute $`\|\Delta\|_F^2`$ for $`\Delta = (A A^\top - B B^\top) + \mathrm{diag}(d_A - d_B)`$, `_distance_sq` avoids the catastrophic cancellation of the Gram expansion $`\|A^\top A\|_F^2 + \|B^\top B\|_F^2 - 2\|A^\top B\|_F^2`$ when $`A A^\top \approx B B^\top`$ by setting $`\delta_d = d_A - d_B`$ and factoring the signed low-rank difference $`\Delta_{\mathrm{low}} = A A^\top - B B^\top = J S J^\top`$, where
 
 ```math
 J = \begin{bmatrix} A & B \end{bmatrix} \in \mathbb{R}^{N \times (K_p + K_t)}, \qquad S = \mathrm{diag}(I_{K_p}, \, -I_{K_t}).
@@ -169,7 +167,7 @@ Let $`u = \sqrt{\max_i \Sigma_{ii}}`$, $`\delta = (\hat{\mu} - \mu)/u`$, $`s_i =
 (\hat{\mu} - \mu)^\top \Sigma^{-1} (\hat{\mu} - \mu) = s^\top (I_N + F F^\top)^{-1} s.
 ```
 
-By the Woodbury matrix identity, $`(I_N + F F^\top)^{-1} = I_N - F G^{-1} F^\top`$ where $`G = I_K + F^\top F \in \mathbb{R}^{K \times K}`$. Rather than subtracting $`s^\top F G^{-1} F^\top s`$ from $`\|s\|_2^2`$, define $`c = G^{-1} F^\top s \in \mathbb{R}^K`$ and the residual $`r = s - F c \in \mathbb{R}^N`$. Using $`(I_K + F^\top F)c = F^\top s`$, expanding $`\|r\|_2^2 + \|c\|_2^2`$ gives:
+By the Woodbury matrix identity, $`(I_N + F F^\top)^{-1} = I_N - F G^{-1} F^\top`$ where $`G = I_K + F^\top F \in \mathbb{R}^{K \times K}`$. To rewrite the difference between $`\|s\|_2^2`$ and $`s^\top F G^{-1} F^\top s`$ as a sum of squares, define $`c = G^{-1} F^\top s \in \mathbb{R}^K`$ and the residual $`r = s - F c \in \mathbb{R}^N`$. Using $`(I_K + F^\top F)c = F^\top s`$, expanding $`\|r\|_2^2 + \|c\|_2^2`$ gives:
 
 ```math
 \|r\|_2^2 + \|c\|_2^2 = s^\top s - 2 s^\top F c + c^\top (F^\top F + I_K) c = s^\top s - s^\top F G^{-1} F^\top s = s^\top (I_N + F F^\top)^{-1} s.
@@ -187,7 +185,7 @@ For any matrix $`A \in \mathbb{R}^{N \times N}`$, $`\mathbb{E}[\|A v_p\|_2^2] = 
 \widehat{\mathrm{NMSE}}_P = \frac{\frac{1}{P} \sum_{p=1}^P N_p}{\frac{1}{P} \sum_{p=1}^P D_p},
 ```
 
-using only matrix-vector products `matvec`. While the numerator and denominator sample means are unbiased estimators of $`\|\hat{\Sigma} - \Sigma\|_F^2`$ and $`\|\Sigma\|_F^2`$, their ratio need not be unbiased. `metric_details` retains all $`P`$ probe values $`(N_p)_{p=1}^P`$, $`(D_p)_{p=1}^P`$, and their $`2 \times 2`$ sample covariance matrix. This probe variance reflects evaluator trace-approximation noise rather than estimator sampling uncertainty.
+using only matrix-vector products `matvec`. The numerator and denominator sample means are unbiased estimators of $`\|\hat{\Sigma} - \Sigma\|_F^2`$ and $`\|\Sigma\|_F^2`$, whereas their finite-probe ratio can be biased. `metric_details` records all $`P`$ probe values $`(N_p)_{p=1}^P`$, $`(D_p)_{p=1}^P`$, and their $`2 \times 2`$ sample covariance matrix to quantify the Monte Carlo variance of the trace approximation.
 
 ## 4. Structural Diagnostics and Trial Statuses
 
@@ -197,7 +195,7 @@ For both `prediction` and `truth`, `_diagnose` records `minimum_diagonal`, `nega
 
 - **`FactorMatrix`**: `status = "psd"`, `method = "factor_construction"`, `scope = "full"`, `certificate = True`, and `strict_pd_sufficient_condition = bool(np.all(specific > 0.0))`.
 - **`DenseMatrix` with $`N \le N_{\mathrm{exact}}`$**: computes all eigenvalues $`\lambda_0 \le \dots \le \lambda_{N-1}`$ of the unit-scaled matrix $`u^{-2} \hat{\Sigma}`$ (`np.linalg.eigvalsh`). With tolerance $`\tau = 128 \varepsilon_{\mathrm{mach}} N \max(1, \max_i |\lambda_i|)`$, reports `status = "indefinite"` if $`\lambda_0 < -\tau`$ and `"psd_within_tolerance"` otherwise (`scope = "full"`, `certificate = False`).
-- **`DenseMatrix` with $`N > N_{\mathrm{exact}}`$**: computes the minimum eigenvalue on each declared block $`\mathcal{B}_1, \dots, \mathcal{B}_m`$. Reports `status = "indefinite_checked_block"` if any block minimum eigenvalue is below $`-128 \varepsilon_{\mathrm{mach}}`$, and `"checked_blocks_nonnegative"` otherwise (`scope = "tested_blocks_only"`, `certificate = False`). Passing the block eigenvalue check on a large dense matrix does not certify global positive semidefiniteness outside the tested blocks.
+- **`DenseMatrix` with $`N > N_{\mathrm{exact}}`$**: computes the minimum eigenvalue on each declared block $`\mathcal{B}_1, \dots, \mathcal{B}_m`$. Reports `status = "indefinite_checked_block"` if any block minimum eigenvalue is below $`-128 \varepsilon_{\mathrm{mach}}`$, and `"checked_blocks_nonnegative"` otherwise (`scope = "tested_blocks_only"`, `certificate = False`, since only the sampled principal blocks are inspected).
 
 ### 4.2 Status Classification
 
@@ -224,7 +222,7 @@ Given `comparison_keys` (default `["comparison_key", "scenario_id", "mode", "tra
    - every path in `objectives` resolves to a finite real number (`not isinstance(v, bool)` and `math.isfinite(float(v))`).
 2. Any record failing these checks is placed in `excluded` with its original index and a reason code (`"invalid_record"`, `"invalid_status"`, `"invalid_comparison_metadata"`, or `"invalid_objective"`).
 
-Because `"partial"` records are checked per selected objective, a `"partial"` record competes on any objective set for which its selected metrics are finite and is excluded only when a selected objective is `null` or non-finite.
+Eligibility is evaluated on the requested `objectives`, so a record with `status == "partial"` is included whenever every requested objective is finite, and excluded only when a requested objective is `null` or non-finite.
 
 ### 5.2 Dominance Relation
 

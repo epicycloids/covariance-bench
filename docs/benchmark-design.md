@@ -1,6 +1,6 @@
 # Benchmark Design
 
-`covariance-bench` evaluates algorithms that estimate the mean and covariance of latent price increments from irregular, noisy, and potentially revised observations. Rather than reducing performance to a single scalar score, the harness records stage-level execution times, memory usage, ten statistical loss functions, and structural diagnostics across distinct scenario regimes, tracks, and execution modes.
+`covariance-bench` evaluates algorithms that estimate the mean and covariance of latent price increments from irregular, noisy, and revised observations. For each scenario regime, track, and execution mode, the harness records stage-level execution times, memory usage, ten statistical loss functions, and structural diagnostics.
 
 The public candidate interface is defined in [`src/covbench/api.py`](../src/covbench/api.py).
 
@@ -37,13 +37,13 @@ Each scenario issues queries at three checkpoints $`t_{\mathrm{asof}} \in (0, T)
 1. **Historical track** (`track = "historical"`): $`t_{\mathrm{start}} = t_{\mathrm{asof}} - w \Delta t`$ and $`t_{\mathrm{end}} = t_{\mathrm{asof}}`$. The candidate estimates the marginal moments of the latent increment over the observed physical-time window $`[t_{\mathrm{start}}, t_{\mathrm{asof}}]`$.
 2. **Forecast track** (`track = "forecast"`): $`t_{\mathrm{start}} = t_{\mathrm{asof}}`$ and $`t_{\mathrm{end}} = t_{\mathrm{asof}} + w \Delta t`$. The candidate predicts the marginal moments of the latent increment over the upcoming window $`[t_{\mathrm{asof}}, t_{\mathrm{end}}]`$ using only information that has arrived by $`t_{\mathrm{asof}}`$.
 
-In both tracks, the target $`(\mu, \Sigma)`$ is the marginal moment pair of the latent increment $`\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}})`$ excluding observation noise, rather than the posterior distribution of the realized path $`X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$ conditional on noisy observations.
+In both tracks, the target $`(\mu, \Sigma)`$ is the moment pair of the latent increment $`\Delta X(t_{\mathrm{start}}, t_{\mathrm{end}})`$ ($`X(t_{\mathrm{end}}) - X(t_{\mathrm{start}})`$) conditional on the draw's piecewise-constant regime parameters, excluding observation noise.
 
 ### 1.3 Information Boundary
 
 Candidates receive only the problem specification `Problem(n_assets, mode, time_unit)`, their own manifest `config`, the causal observation set available at $`t_{\mathrm{asof}}`$, and the `Query` instances.
 
-The evaluator retains all ground-truth regime parameters ($`\mu_r, B_r, d_r`$), latent sample paths $`X(t)`$, observation noise parameters, random seeds, and events with arrival timestamps $`a > t_{\mathrm{asof}}`$. Candidate configuration is part of the frozen artifact and must not be used as an oracle channel for test-instance parameters.
+The evaluator retains all ground-truth regime parameters ($`\mu_r, B_r, d_r`$), latent sample paths $`X(t)`$, observation noise parameters, random seeds, and events with arrival timestamps $`a > t_{\mathrm{asof}}`$. Candidate `config` is part of the frozen artifact and must not encode test-instance parameters or answers.
 
 ## 2. Observation Table and Online Event Semantics
 
@@ -56,7 +56,7 @@ An event is a tuple $`(a_m, t_m, i_m, y_m, \mathrm{op}_m)`$ where:
 - $`\mathrm{op}_m = \mathrm{UPSERT}`$ (`0`): inserts or replaces the value associated with key $`(i_m, t_m)`$ by $`y_m \in \mathbb{R}`$.
 - $`\mathrm{op}_m = \mathrm{DELETE}`$ (`1`): removes key $`(i_m, t_m)`$ from the active observation table; the field $`y_m`$ is ignored.
 
-Because arrival latencies vary across observations and corrections arrive after the initial publication, the sequence of measurement timestamps $`(t_m)`$ in an arrival-ordered stream is not monotonic. Candidates must treat an edit to an existing key $`(i_m, t_m)`$ as a replacement or deletion of that point rather than as an additional independent observation.
+Because arrival latencies vary across observations and revisions arrive after initial publication, measurement timestamps $`(t_m)`$ in an arrival-ordered stream are not monotonic. Subsequent events for an existing key $`(i_m, t_m)`$ replace or delete the stored observation at that key.
 
 ### 2.2 Causal Prefix Equivalence
 
@@ -106,12 +106,12 @@ At the start of `covbench run`, the candidate directory is copied into `<output>
 
 During the timed `predict` stage, the worker validates these conditions and copies the arrays into contiguous `float64` host NumPy arrays.
 
-API validity and statistical domain requirements are evaluated separately:
+Structural validation is separate from individual metric domain checks:
 
 - A `FactorMatrix` is positive semidefinite by construction.
-- A valid `DenseMatrix` may be indefinite. When a dense estimate is indefinite, algebraic losses (`covariance_nmse`, `second_moment_nmse`, `diagonal_nmse`, `portfolio_risk_relative_mse`, `portfolio_second_moment_relative_mse`, `mean_variance_scaled_mse`, `mean_mahalanobis`) are still evaluated.
-- `correlation_mse` requires only strictly positive marginal variances ($`\hat{\Sigma}_{ii} > 0`$ and $`\Sigma_{ii} > 0`$ for all $`i`$), so an indefinite matrix with positive diagonal entries still receives a finite correlation score.
-- `gaussian_kl` and `covariance_qlike` require that neither matrix is diagnosed as full-matrix `"indefinite"` (checked via symmetric eigenvalues for dense matrices with $`N \le N_{\mathrm{exact}}`$) and that Cholesky factorization succeeds on every declared principal block $`\mathcal{B}_b`$. A globally singular positive semidefinite matrix can therefore pass when every declared proper block is strictly positive definite; if full-matrix diagnosis is `"indefinite"` or any declared block fails Cholesky factorization, both metrics are recorded as `null` (`None` in Python).
+- A valid `DenseMatrix` may be indefinite; indefiniteness does not exclude a prediction from the algebraic losses (`covariance_nmse`, `second_moment_nmse`, `diagonal_nmse`, `portfolio_risk_relative_mse`, `portfolio_second_moment_relative_mse`, `mean_variance_scaled_mse`, `mean_mahalanobis`).
+- `correlation_mse` requires strictly positive marginal variances ($`\hat{\Sigma}_{ii} > 0`$ and $`\Sigma_{ii} > 0`$ for all $`i`$), which permits indefinite dense estimates with positive diagonal entries.
+- `gaussian_kl` and `covariance_qlike` require that neither matrix is diagnosed as full-matrix `"indefinite"` (checked via symmetric eigenvalues for dense matrices with $`N \le N_{\mathrm{exact}}`$) and that Cholesky factorization succeeds on every declared principal block $`\mathcal{B}_b`$. A globally rank-deficient positive semidefinite matrix satisfies this condition when every declared proper block is strictly positive definite; if full-matrix diagnosis is `"indefinite"` or any declared block fails Cholesky factorization, both metrics are recorded as `null` (`None` in Python).
 
 ## 4. Execution Architecture and Timing Model
 
@@ -125,13 +125,13 @@ Each trial runs in a dedicated child process (`python -m covbench.worker`) manag
   - Thread limits (`OPENBLAS_NUM_THREADS`, `OMP_NUM_THREADS`, `MKL_NUM_THREADS`, `NUMEXPR_NUM_THREADS`, `VECLIB_MAXIMUM_THREADS`, `RAYON_NUM_THREADS`) are set to `--threads`, and `PYTHONHASHSEED` is fixed to `"0"`.
   - When supported by the operating system (`os.sched_setaffinity`), the worker is pinned to the first `--threads` logical CPUs available to the runner.
   - Each command is subject to a wall-clock deadline (`--timeout`, default 60 s) and a peak resident set size ceiling (`--memory-mib`, default 1,024 MiB) monitored via `VmHWM` in `/proc/<pid>/status`.
-- **Isolation scope**: subprocess execution isolates process memory and crashes between trials, but does not provide a container, filesystem, or network sandbox. Candidate processes retain the permissions of the invoking user account.
+- **Isolation scope**: worker subprocesses isolate memory state and process crashes across trials and run with the filesystem, network, and OS permissions of the invoking user account.
 
 ### 4.2 Stage Timings, Synchronization, and Materialization
 
 To measure asynchronous accelerators (such as CUDA GPUs) accurately, the worker defines a barrier `sync()` that calls `estimator.synchronize()`, and when `torch` (with CUDA initialized) or `cupy` is already imported in `sys.modules`, also calls `torch.cuda.synchronize()` or `cupy.cuda.runtime.deviceSynchronize()`.
 
-For `create`, `fit`, and `update`, the worker calls `sync()` before starting `time.perf_counter_ns()` (flushing any prior work), executes the candidate method, and calls `sync()` **before** stopping the timer, so that completion of all work launched by the stage is charged to `duration_ns`.
+For `create`, `fit`, and `update`, the worker calls `sync()` before starting `time.perf_counter_ns()` (flushing any prior work), executes the candidate method, and calls `sync()` before stopping the timer, so that completion of all work launched by the stage is charged to `duration_ns`.
 
 For `predict(query)`, the worker calls `sync()`, starts the timer, and executes the following sequence before stopping `predict_ns`:
 
@@ -140,9 +140,9 @@ For `predict(query)`, the worker calls `sync()`, starts the timer, and executes 
 3. `materialize(prediction, problem.n_assets)` to validate shapes, symmetry, and finiteness and to copy `mean` and `covariance` into freshly allocated, contiguous `float64` host NumPy arrays
 4. `sync()` before recording `duration_ns`
 
-Writing the materialized host arrays to `prediction-XXXX.npz` on disk and computing statistical losses in the runner occur after the timer stops. The exact prediction produced during the timed query is the one saved and scored.
+After the timer stops, the worker writes these materialized arrays to `prediction-XXXX.npz` on disk, and the runner computes statistical losses from that saved prediction.
 
-Every `(replication, timing_repeat, mode)` trial spawns a fresh worker process. Installed packages, OS file caches, and external compiler caches are not purged, but in-memory process state is reset each trial, and any JIT compilation triggered during `load`, `create`, `fit`, `update`, or `predict` is charged to that stage. Candidates must not cache instance answers across independent trials.
+Every `(replication, timing_repeat, mode)` trial spawns a fresh worker process. Spawning a new worker resets in-memory process state for each trial while leaving the Python environment, OS file cache, and persistent disk caches intact; any JIT compilation triggered during `load`, `create`, `fit`, `update`, or `predict` is included in that stage's measured time. Candidates must not cache instance answers across independent trials.
 
 ### 4.3 Checkpoint Work Accounting
 
@@ -215,14 +215,14 @@ When `covbench regrade` is run on an existing `results.json`, it regenerates eac
 
 1. **Development phase**: use `suites/smoke.json` for fast verification and `suites/core.json` (or `suites/scale.json`) with a fixed `--root-seed` to compare candidate revisions and hyperparameter configurations against the baseline estimators on identical synthetic realizations.
 2. **Selection and freezing**: select candidate configurations on the per-regime Pareto frontier (`covbench frontier`), then freeze the candidate directory and `candidate.json`.
-3. **Holdout validation**: evaluate the frozen candidate alongside baselines using a fresh `--root-seed` on `suites/holdout.json`. Fresh seeds test new random draws from a given scenario specification, whereas `suites/holdout.json` tests generalization across distinct asset counts, regime counts, innovation parameters, and drift scales. Because `suites/holdout.json` is public in the repository, reusing held-out feedback to guide further tuning turns those cases into development data; subsequent validation requires a fresh seed and held-out configuration.
+3. **Holdout validation**: evaluate the frozen candidate alongside baselines using a fresh `--root-seed` on `suites/holdout.json`. A fresh seed tests new realizations of a fixed scenario specification, while `suites/holdout.json` tests generalization across distinct asset counts, three-regime transitions, innovation parameters, and drift scales. Once `suites/holdout.json` results are used to revise a candidate or its hyperparameters, subsequent validation requires a new seed and held-out scenario configuration.
 
 ## 7. Related Benchmark Literature
 
-Several structural conventions in `covariance-bench` adapt ideas from established software and systems benchmarks (without claiming compatibility or shared dependencies):
+Several design conventions in `covariance-bench` draw on established software and systems benchmarks:
 
-- **SWE-bench** ([evaluation guide](https://www.swebench.com/SWE-bench/guides/evaluation/)): separates submitted artifacts from per-instance harness execution and structured reporting.
-- **Harbor / Terminal-Bench** ([task overview](https://docs.harborframework.com/tasks/overview); [separate verifier](https://docs.harborframework.com/tasks/separate-verifier)): separates task instructions, candidate solution, and evaluator-owned verification (adopted here without Harbor's container isolation).
+- **SWE-bench** ([evaluation guide](https://www.swebench.com/SWE-bench/guides/evaluation/)): separates submitted candidate artifacts from per-instance harness execution and structured reporting.
+- **Harbor / Terminal-Bench** ([task overview](https://docs.harborframework.com/tasks/overview); [separate verifier](https://docs.harborframework.com/tasks/separate-verifier)): separates task instructions, candidate solution, and evaluator-owned verification.
 - **Airspeed Velocity (ASV)** ([writing benchmarks](https://asv.readthedocs.io/en/stable/writing_benchmarks.html)): separates setup, import, and timed execution phases and makes process-level state resets explicit.
 - **MLPerf Inference LoadGen** ([LoadGen scope](https://github.com/mlcommons/inference/blob/3fbc329939999c13d0a7b5e67fb2092287e06047/loadgen/README.md#scope-of-the-loadgens-responsibilities); [inference rules](https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc#51-loadgen-operation)) and **PyTorch CUDA semantics** ([asynchronous execution](https://docs.pytorch.org/docs/stable/notes/cuda#asynchronous-execution)): require device synchronization before stopping timers and score the exact outputs produced during timed execution.
 - **AlgoTune** ([paper](https://algotune.io/paper.pdf#page=4); [timed-output check](https://github.com/oripress/AlgoTune/blob/dff9914c10800c7a031c9e8c3d4d1c8cd1b38906/AlgoTuner/utils/evaluator/solution_checks.py#L245)): pairs seeded input generation, reference baselines, iterative development feedback, and held-out evaluation of candidate code, while scoring the timed output directly.

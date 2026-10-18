@@ -19,5 +19,5 @@ The estimator maintains the active observation table under `UPSERT` replacement 
 
 ## Execution Profile and Limitations
 
-- **Refit timing**: online `update` calls only maintain the point table; the native overlap scan and any factor fitting occur inside `predict` and are included in `predict_ns` and `completed_ns`. This baseline does not benchmark `async_covariance`'s incremental `OnlineCovariance` engine.
-- **Modeling policies**: observation noise variance is set to zero, and the ring graph, rank cap, and variance floor for $`N > 256`$ are fixed baseline policies. Any native fitting errors propagate directly as candidate failures. CPU `synchronize()` is a no-op.
+- **Refit timing**: both `offline` and `online` modes call batch `async_covariance.fit` at query time; `async_covariance.OnlineCovariance` is not used. Online `update` calls only maintain the point table, so the native overlap scan and any factor fitting occur inside `predict` and are included in `predict_ns` and `completed_ns`.
+- **Modeling policies**: observation noise variance is fixed at zero (`noise_variance = 0.0`), and the $`N > 256`$ ring degree, factor rank cap, and variance floor are fixed hyperparameters. Native fitting exceptions propagate as candidate failures. CPU `synchronize()` is a no-op.
